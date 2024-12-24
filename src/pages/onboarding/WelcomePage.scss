@@ -1,0 +1,115 @@
+.welcome-page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  background-color: #1a1a1a;
+
+  .top-section {
+    background-color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40%;
+    .wallet-image {
+      width: 100%;
+      max-height: 216px;
+      object-fit: contain;
+    }
+  }
+
+  .bottom-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    align-items: flex-start;
+    background-color: #eae6f8;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    padding: 35px;
+    height: 60%;
+    z-index: 10;
+
+    .pagination-container {
+      display: flex;
+      margin-bottom: 20px;
+
+      .active-dot,
+      .inactive-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin: 0 5px;
+      }
+
+      .active-dot {
+        background-color: #8b5cf6;
+      }
+
+      .inactive-dot {
+        background-color: #d1d5db;
+      }
+    }
+
+    .title {
+      font-size: 30px;
+      font-weight: bold;
+      color: #1a1a1a;
+      text-align: start;
+      margin-bottom: 10px;
+    }
+
+    .description {
+      font-size: 18px;
+      color: #6b7280;
+      text-align: start;
+      margin-bottom: 30px;
+    }
+
+    .buttons-container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      align-items: center;
+
+      .skip-button {
+        font-size: 16px;
+        color: #8b5cf6;
+        font-weight: bold;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+
+      .arrow-button {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #8b5cf6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #6d4bdc;
+        }
+
+        span {
+          font-size: 16px;
+          color: #ffffff;
+          font-weight: bold;
+          text-align: center;
+
+          &.arrow-icon {
+            font-size: 24px;
+            padding-bottom: 10px;
+          }
+        }
+      }
+    }
+  }
+}
