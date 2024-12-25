@@ -1,0 +1,95 @@
+.topWrapper {
+  margin-top: 100px;
+
+  .backButton {
+    font-size: 16px;
+    color: black;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+.hero {
+  margin-top: 25px;
+
+  h1 {
+    font-weight: 700;
+    font-size: 24px;
+  }
+
+  p {
+    margin-top: 10px;
+    font-size: 15px;
+  }
+}
+
+.inputBoxes {
+  margin-top: 60px;
+  display: flex;
+  justify-content: space-between;
+
+  .singleBox {
+    border: 1px solid #efefef;
+    height: 70px;
+    width: 50px;
+    background-color: #f8f9fb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+
+    .boxInput {
+      font-size: 20px;
+      text-align: center;
+      border: none;
+      background: none;
+      width: 100%;
+    }
+  }
+}
+
+.resendSection {
+  margin-top: 50px;
+  text-align: center;
+
+  .timerText {
+    color: #888;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .resendButton {
+    font-size: 18px;
+    font-weight: 700;
+    color: #895cfe;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+}
+
+.confirmSection {
+  margin-top: 30px;
+
+  .primaryButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #895cfe;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  }
+}

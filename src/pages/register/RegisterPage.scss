@@ -1,0 +1,112 @@
+.topWrapper {
+  margin-top: 100px;
+}
+
+.backButton {
+  font-size: 16px;
+  color: black;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hero {
+  margin-top: 25px;
+}
+
+.heroText {
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.subHero {
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+.inputWrapper {
+  margin-top: 60px;
+}
+
+.inputArea {
+  margin: 8px 0;
+}
+
+.inputAreaText {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+.textInputMedium {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.errorText {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.termsContainer {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.checkbox {
+  margin-right: 8px;
+}
+
+.termsText {
+  color: #8a2be2;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 16px;
+  background: none;
+  border: none;
+}
+
+.modalContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  max-height: 80%;
+  overflow-y: auto;
+  width: 90%;
+}
+
+.modalTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.modalText {
+  font-size: 16px;
+  color: #555;
+}
+
+.closeButton {
+  margin-top: 20px;
+  background-color: #8a2be2;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

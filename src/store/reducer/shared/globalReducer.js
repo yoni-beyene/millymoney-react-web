@@ -3,12 +3,8 @@ import { globalActionType } from "../../action/shared/globalAction";
 const initialState = {
   showWelcomePage: true,
   accessToken: null,
-  optData: {
-    isUserRegistered: false,
-    otp: {},
-    message: "",
-    phoneNumber: "",
-  },
+  senderId: "",
+  optData: {},
 };
 
 const globalReducer = (state = initialState, action) => {
@@ -18,10 +14,16 @@ const globalReducer = (state = initialState, action) => {
         ...state,
         showWelcomePage: action.showWelcomePage,
       };
+    case globalActionType.SAVE_OPT_DATA:
+      return {
+        ...state,
+        optData: action.optData,
+      };
     case globalActionType.SAVE_TOKEN:
       return {
         ...state,
         accessToken: action.accessToken,
+        senderId: action.senderId,
       };
     default:
       return state;

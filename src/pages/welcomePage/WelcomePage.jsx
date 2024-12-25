@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { globalActionType } from "../../store/action/shared/globalAction";
 import SlideScreens from "../../components/slideScreens/SlideScreens";
 import "./WelcomePage.scss";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const WelcomePage = () => {
+  const showWelcomePage = useSelector((state) => state.global.showWelcomePage);
+  useEffect(() => {
+    if (!showWelcomePage) {
+      navigation.navigate("login");
+    }
+  }, []);
   const slides = [
     {
       id: 1,
@@ -34,18 +40,19 @@ const WelcomePage = () => {
   const handleSkip = () => {
     dispatch({
       type: globalActionType.SHOW_UPDATE_WELCOME_PAGE,
-      SHOW_UPDATE_WELCOME_PAGE: true,
+      showWelcomePage: false,
     });
-    navigation.replace("/login"); // Adjust for React Router navigation
+
+    navigation.navigate("login");
   };
 
   const handleNext = () => {
     if (currentIndex === slides.length - 1) {
       dispatch({
         type: globalActionType.SHOW_UPDATE_WELCOME_PAGE,
-        SHOW_UPDATE_WELCOME_PAGE: true,
+        showWelcomePage: false,
       });
-      navigation.replace("/login");
+      navigation.navigate("login");
     } else {
       setCurrentIndex(currentIndex + 1);
     }

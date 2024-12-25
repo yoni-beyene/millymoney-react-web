@@ -6,6 +6,8 @@ import { countries } from "../../data/countries";
 import HTTPService from "../../services/shared/HTTPService";
 import { useDispatch } from "react-redux";
 import "./LoginPage.scss";
+import PrimaryButton from "../../components/shared/primaryButton/PrimaryButton";
+import { globalActionType } from "../../store/action/shared/globalAction";
 
 const loginSchema = yup.object({
   phone: yup
@@ -49,16 +51,14 @@ const LoginPage = () => {
                 `/sender/validate-sender/${dialCode}${values.phone}`
               )
                 .then((res) => {
-                  const userLoginData = {
-                    isUserRegistered: true,
-                    otp: res.data.otp,
-                    message: "user found",
-                    phoneNumber: dialCode + values.phone,
-                  };
                   navigator.clipboard.writeText(res.data.otp.otpValue);
                   alert("OTP copied to clipboard!");
-                  //   dispatch(updateOptData(userLoginData));
-                  navigation.navigate("verificationScreen");
+
+                  dispatch({
+                    type: globalActionType.SAVE_OPT_DATA,
+                    optData: res.data,
+                  });
+                  navigation.navigate("verification");
                   setIsLoading(false);
                 })
                 .catch(() => {
@@ -74,7 +74,14 @@ const LoginPage = () => {
                       className="country-select"
                       onClick={() => setModalVisible(!modalVisible)}
                     >
-                      <CountryFlag code={isoCode} className="flag" />
+                      <CountryFlag
+                        code={isoCode}
+                        className="flag"
+                        style={{
+                          height: 30,
+                          width: 30,
+                        }}
+                      />
                       <span className="country-text">{dialCode}</span>
                     </button>
                   </div>
@@ -93,37 +100,72 @@ const LoginPage = () => {
                   </div>
                 </div>
                 <div className="action-section">
-                  <button className="btn btn-primary"></button>
+                  <PrimaryButton
+                    text="Login"
+                    onClick={props.handleSubmit}
+                    isLoading={isLoading}
+                  />
                 </div>
               </div>
             )}
           </Formik>
           {modalVisible && (
             <div
-              className="modal-overlay"
+              className="modal fade show d-block"
+              role="dialog"
               onClick={() => setModalVisible(false)}
             >
-              <div className="modal-view">
+              <div
+                className="modal-dialog modal-dialog-centered modal-lg"
+                role="document"
+                onClick={(e) => e.stopPropagation()} // Prevent closing modal when clicking inside
+              >
                 <div className="modal-content">
-                  {countries.map((country) => (
+                  <div className="modal-header">
+                    <h5 className="modal-title">Select a Country</h5>
                     <button
-                      className="country-box"
-                      key={country.isoCode}
-                      onClick={() => {
-                        setCountry(country.country);
-                        setIsoCode(country.isoCode);
-                        setDialCode(country.dialCode);
-                        setModalVisible(false);
-                      }}
+                      type="button"
+                      className="btn-close"
+                      aria-label="Close"
+                      onClick={() => setModalVisible(false)}
+                    ></button>
+                  </div>
+                  <div className="modal-body">
+                    <div className="list-group">
+                      {countries.map((country) => (
+                        <button
+                          className="list-group-item list-group-item-action d-flex align-items-center"
+                          key={country.isoCode}
+                          onClick={() => {
+                            setCountry(country.country);
+                            setIsoCode(country.isoCode);
+                            setDialCode(country.dialCode);
+                            setModalVisible(false);
+                          }}
+                        >
+                          <div className="me-3">
+                            <CountryFlag
+                              code={country.isoCode}
+                              className="flag"
+                            />
+                          </div>
+                          <div>
+                            <strong>{country.country}</strong> (
+                            {country.dialCode})
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={() => setModalVisible(false)}
                     >
-                      <div className="country-box-left">
-                        <CountryFlag code={country.isoCode} className="flag" />
-                      </div>
-                      <div className="country-box-right">
-                        {country.country} ({country.dialCode})
-                      </div>
+                      Close
                     </button>
-                  ))}
+                  </div>
                 </div>
               </div>
             </div>
