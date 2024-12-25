@@ -1,6 +1,4 @@
-import React from "react";
 import PropTypes from "prop-types";
-import MillyMoney from "/images/logos/MillyMoney.png";
 
 const SlideScreens = ({
   slide,
@@ -23,7 +21,7 @@ const SlideScreens = ({
     <div className="container h-100 pb-0 mb-0">
       <div className="top-section flex-column">
         <div className="d-flex w-100 justify-content-center my-5">
-          <img src={MillyMoney} alt="MillyMoney Logo" />
+          <img src="/images/logos/MillyMoney.png" alt="MillyMoney Logo" />
         </div>
         <img src={slide.image} alt="Slide" className="wallet-image" />
       </div>

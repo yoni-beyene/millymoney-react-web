@@ -1,0 +1,4 @@
+export const globalActionType = {
+  SAVE_TOKEN: "SAVE_TOKEN",
+  SHOW_UPDATE_WELCOME_PAGE: "SHOW_UPDATE_WELCOME_PAGE",
+};

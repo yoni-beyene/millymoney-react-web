@@ -1,5 +1,5 @@
-import Header from "../components/shared/header/Header";
-import WelcomePage from "../pages/onboarding/WelcomePage";
+import LoginPage from "../pages/login/LoginPage";
+import WelcomePage from "../pages/welcomePage/WelcomePage";
 import { createBrowserRouter } from "react-router-dom";
 
 const RouteList = createBrowserRouter([
@@ -8,6 +8,10 @@ const RouteList = createBrowserRouter([
       {
         path: "/",
         element: <WelcomePage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
       },
     ],
     errorElement: (
