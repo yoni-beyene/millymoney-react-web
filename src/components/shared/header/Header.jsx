@@ -1,47 +1,71 @@
-import "./Header.scss";
-import { faBars, faClose } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCreditCard,
+  faHome,
+  faPeopleGroup,
+  faRightFromBracket,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
+import { faChartSimple } from "@fortawesome/free-solid-svg-icons/faChartSimple";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import MillyMoney from "/images/logos/MillyMoney.png";
-
-import { NavLinks } from "../../../data/navLinks";
-
-const Header = () => {
-  const [activeTab, setActiveTab] = useState("");
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
-
+import PropTypes from "prop-types";
+import "./Header.scss";
+const Header = (props) => {
   return (
-    <header className="container header-container mt">
-      <Link onClick={() => setActiveTab("")} to="/">
-        <img src={MillyMoney} alt="Fannos Logo" />
-      </Link>
-      <div className="d-flex p-2 align-items-center  gap-3">
-        <nav className="d-none d-md-flex header-nav-links gap-3">
-          {NavLinks.map(({ id, name, route }) => (
-            <Link key={id} onClick={() => setActiveTab(name)} to={route}>
-              <span
-                className={
-                  activeTab == name
-                    ? "activeTab nav-links mx-1"
-                    : "nav-links mx-1"
-                }
-              >
-                {name}
-              </span>
-            </Link>
-          ))}
-        </nav>
-        <div className="d-flex gap-3 align-items-center justify-content-center">
-          <FontAwesomeIcon
-            onClick={() => setShowMobileMenu(!showMobileMenu)}
-            className="d-md-none cursor-pointer"
-            icon={showMobileMenu ? faClose : faBars}
-          />
-        </div>
+    <aside className="sidebar pt-5">
+      <ul className="menu">
+        <li className={`menu-item ${props.activeTab === "home" && "active"}`}>
+          <a href="/home" style={{ color: "white", textDecoration: "unset" }}>
+            <span className="me-2">
+              <FontAwesomeIcon icon={faHome} />
+            </span>{" "}
+            Home
+          </a>
+        </li>
+        <li
+          className={`menu-item ${
+            props.activeTab === "statistics" && "active"
+          }`}
+        >
+          <a
+            href="/statistics"
+            style={{ color: "white", textDecoration: "unset" }}
+          >
+            <span className="me-2">
+              <FontAwesomeIcon icon={faChartSimple} />
+            </span>{" "}
+            Statistics
+          </a>
+        </li>
+        <li className="menu-item">
+          {" "}
+          <span className="me-2">
+            <FontAwesomeIcon icon={faPeopleGroup} />
+          </span>{" "}
+          Recipient
+        </li>
+        <li className="menu-item">
+          <span className="me-2">
+            <FontAwesomeIcon icon={faCreditCard} />
+          </span>{" "}
+          Cards
+        </li>
+        <li className="menu-item">
+          <span className="me-2">
+            <FontAwesomeIcon icon={faUser} />
+          </span>{" "}
+          Profile
+        </li>
+      </ul>
+      <div className="logout">
+        <span className="me-2">
+          <FontAwesomeIcon icon={faRightFromBracket} />
+        </span>{" "}
+        Logout
       </div>
-    </header>
+    </aside>
   );
 };
-
+Header.propTypes = {
+  activeTab: PropTypes.object.isRequired,
+};
 export default Header;

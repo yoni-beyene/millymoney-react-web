@@ -1,6 +1,7 @@
-import Dashboard from "../pages/dashboard/Dashboard";
+import HomePage from "../pages/home/HomePage";
 import LoginPage from "../pages/login/LoginPage";
 import RegisterPage from "../pages/register/RegisterPage";
+import StatisticsPage from "../pages/statistics/StatisticsPage";
 import VerificationPage from "../pages/verificationPage/VerificationPage";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -24,8 +25,12 @@ const RouteList = createBrowserRouter([
         element: <RegisterPage />,
       },
       {
-        path: "/dashboard",
-        element: <Dashboard />,
+        path: "/home",
+        element: <HomePage />,
+      },
+      {
+        path: "/statistics",
+        element: <StatisticsPage />,
       },
     ],
     // errorElement: (

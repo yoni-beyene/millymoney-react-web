@@ -1,159 +1,50 @@
-a {
-  text-decoration: none !important;
-}
-
-.header-container {
-  min-height: 95px;
-  color: #134b9a;
-  font-size: 1rem;
+.sidebar {
+  width: 250px;
+  background-color: #1a1a2e;
+  color: #fff;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
-}
-.header-nav-links {
-  @media screen and (max-width: 992px) {
-    display: none;
-  }
-}
-
-.activeTab {
-  border-bottom: 2px solid #00678a;
-  border-radius: 2px;
-  padding: 5px 0;
-  color: #134b9a;
-  font-family: Poppins;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  transition: cubic-bezier() 0.4s ease-in;
-}
-.nav-links {
-  text-decoration: none;
-  color: inherit;
-  color: #000;
-  font-family: Poppins;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  a {
-    text-decoration: none;
-  }
-}
-
-.select-currecy-btn {
-  padding: 0.1rem 0.5rem;
-  cursor: pointer;
-  border-radius: 5px;
-}
-.select-currecy-btn-mobile {
-  padding: 0.5rem 0;
-  cursor: pointer;
-  border-radius: 5px;
-  span {
-    color: #000;
-    font-family: Poppins;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-  }
-  .first {
-    margin-right: 1rem;
-  }
-}
-.select-currecy-btn:hover {
-  background-color: #ecf1f7;
-}
-
-.mobile-heading {
-  color: #000;
-  font-family: Poppins;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-}
-
-.login-instructions-container {
-  width: 300px;
-  left: auto;
-}
-
-.card-style {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px;
   padding: 20px;
-  max-width: 300px;
-  margin-left: auto;
-}
+  height: 100%;
+  .menu {
+    list-style: none;
+    padding: 0;
 
-.login-btn:hover {
-  color: #134b9a;
-  cursor: pointer;
-}
-.my-accounts-lists:hover {
-  color: #134b9a;
-  cursor: pointer;
-  text-decoration: underline;
-}
-.my-accounts-sign-out:hover {
-  color: #912323;
-  cursor: pointer;
-  text-decoration: underline;
-}
-.login-in-btn-header,
-.sign-up-btn-header {
-  background: #134b9a !important;
-}
-.auth-card {
-  box-shadow: 0 2px 0.75rem rgba(12, 14, 28, 0.08) !important;
-  border-radius: 0 !important;
-  max-width: 100% !important;
-  animation: auth-card 0.2s normal;
-  padding-bottom: 30px;
-  box-sizing: border-box;
-  position: fixed !important;
-  top: 0;
-  max-height: 100vh !important;
-  height: 100vh !important;
-  z-index: 1001;
-  width: 20%;
-  box-shadow: 0 2px 0.75rem rgba(12, 14, 28, 0.08);
-  overflow-y: scroll;
-}
-.auth-text {
-  align-self: stretch;
-  color: var(--Gray-600, #475467);
-  text-align: center;
-  font-family: poppins;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px;
-}
-@media (max-width: 678px) {
-  .auth-card {
-    width: 100% !important;
+    .menu-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      font-size: 16px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      i {
+        margin-right: 10px;
+      }
+
+      &:hover,
+      &.active {
+        background: #662d91;
+        border-radius: 8px;
+      }
+    }
   }
-}
-@media (min-width: 678px) and (max-width: 991px) {
-  .auth-card {
-    width: 40% !important;
-  }
-}
-@media (min-width: 992px) and (max-width: 1400px) {
-  .auth-card {
-    width: 30% !important;
-  }
-}
-@keyframes auth-card {
-  from {
-    width: 0px;
-  }
-  to {
-    width: 20%;
+
+  .logout {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: red;
+    cursor: pointer;
+
+    i {
+      margin-right: 10px;
+    }
+
+    &:hover {
+      color: #ff4d4d;
+    }
   }
 }
