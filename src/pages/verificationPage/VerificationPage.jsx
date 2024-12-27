@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import PrimaryButton from "../../components/shared/primaryButton/PrimaryButton";
 import HTTPService from "../../services/shared/HTTPService";
@@ -7,8 +6,9 @@ import "./VerificationPage.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { globalActionType } from "../../store/action/shared/globalAction";
+import WelcomeCarousel from "../../components/welcomeCarousel/WelcomeCarousel";
 
-const VerificationPage = ({ navigation }) => {
+const VerificationPage = () => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(60);
   const [resendDisabled, setResendDisabled] = useState(true);
@@ -113,55 +113,69 @@ const VerificationPage = ({ navigation }) => {
   };
 
   return (
-    <div className="login-page-container">
-      <div
-        className="container justify-content-center d-flex align-items-center"
-        style={{ height: "100vh" }}
-      >
-        <div className="login-container px-5">
-          <div className="topWrapper d-flex">
-            <button
-              onClick={() => navigation.navigate("login")}
-              className="backButton"
+    <div className="container-fluid">
+      <div className="row">
+        <div className="col-md-6 d-flex flex-column justify-content-center align-items-center">
+          <div className="login-page-container">
+            <div
+              className="container justify-content-center d-flex align-items-center"
+              style={{ height: "100vh" }}
             >
-              <FontAwesomeIcon icon={faArrowLeft} fontSize={25} />
-            </button>
-          </div>
-          <div className="hero">
-            <h1>Verification Code</h1>
-            <p>We have sent the verification code to your phone.</p>
-          </div>
-          <div className="inputBoxes">
-            {code.map((value, index) => (
-              <div key={index} className="singleBox">
-                <input
-                  ref={(el) => (inputs.current[index] = el)}
-                  type="text"
-                  maxLength={index === 0 ? 6 : 1}
-                  value={value}
-                  onChange={(e) => handleChange(e.target.value, index)}
-                  className="boxInput"
-                />
+              <div className="login-container px-5">
+                <div className="topWrapper d-flex">
+                  <button
+                    onClick={() => navigation.navigate("login")}
+                    className="backButton"
+                  >
+                    <FontAwesomeIcon icon={faArrowLeft} fontSize={25} />
+                  </button>
+                </div>
+                <div className="hero">
+                  <h1>Verification Code</h1>
+                  <p>We have sent the verification code to your phone.</p>
+                </div>
+                <div className="inputBoxes w-100">
+                  {code.map((value, index) => (
+                    <div key={index} className="singleBox">
+                      <input
+                        ref={(el) => (inputs.current[index] = el)}
+                        type="text"
+                        maxLength={index === 0 ? 6 : 1}
+                        value={value}
+                        onChange={(e) => handleChange(e.target.value, index)}
+                        className="boxInput"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="resendSection">
+                  <span className="timerText">{formatTime(timer)}</span>
+                  <button
+                    className={`resendButton ${
+                      resendDisabled ? "disabled" : ""
+                    }`}
+                    disabled={resendDisabled}
+                    onClick={handleResend}
+                  >
+                    Resend
+                  </button>
+                </div>
+                <div className="confirmSection">
+                  <PrimaryButton
+                    text="Verify"
+                    onClick={handleVerify}
+                    isLoading={isLoading}
+                  />
+                </div>
               </div>
-            ))}
+            </div>
           </div>
-          <div className="resendSection">
-            <span className="timerText">{formatTime(timer)}</span>
-            <button
-              className={`resendButton ${resendDisabled ? "disabled" : ""}`}
-              disabled={resendDisabled}
-              onClick={handleResend}
-            >
-              Resend
-            </button>
-          </div>
-          <div className="confirmSection">
-            <PrimaryButton
-              text="Verify"
-              onClick={handleVerify}
-              isLoading={isLoading}
-            />
-          </div>
+        </div>
+        <div
+          className="col-md-6 position-relative d-flex align-items-center justify-content-center bg-dark text-white"
+          style={{ height: "100vh" }}
+        >
+          <WelcomeCarousel />
         </div>
       </div>
     </div>

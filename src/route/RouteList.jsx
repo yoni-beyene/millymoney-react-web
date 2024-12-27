@@ -1,7 +1,6 @@
 import LoginPage from "../pages/login/LoginPage";
 import RegisterPage from "../pages/register/RegisterPage";
 import VerificationPage from "../pages/verificationPage/VerificationPage";
-import WelcomePage from "../pages/welcomePage/WelcomePage";
 import { createBrowserRouter } from "react-router-dom";
 
 const RouteList = createBrowserRouter([
@@ -9,7 +8,7 @@ const RouteList = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <WelcomePage />,
+        element: <LoginPage />,
       },
       {
         path: "/login",
