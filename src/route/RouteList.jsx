@@ -1,3 +1,4 @@
+import Dashboard from "../pages/dashboard/Dashboard";
 import LoginPage from "../pages/login/LoginPage";
 import RegisterPage from "../pages/register/RegisterPage";
 import VerificationPage from "../pages/verificationPage/VerificationPage";
@@ -21,6 +22,10 @@ const RouteList = createBrowserRouter([
       {
         path: "/register",
         element: <RegisterPage />,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
       },
     ],
     // errorElement: (
