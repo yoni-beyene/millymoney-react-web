@@ -1,5 +1,6 @@
 import HomePage from "../pages/home/HomePage";
 import LoginPage from "../pages/login/LoginPage";
+import RecipientPage from "../pages/recipient/RecipientPage";
 import RegisterPage from "../pages/register/RegisterPage";
 import StatisticsPage from "../pages/statistics/StatisticsPage";
 import VerificationPage from "../pages/verificationPage/VerificationPage";
@@ -31,6 +32,10 @@ const RouteList = createBrowserRouter([
       {
         path: "/statistics",
         element: <StatisticsPage />,
+      },
+      {
+        path: "/recipient",
+        element: <RecipientPage />,
       },
     ],
     // errorElement: (

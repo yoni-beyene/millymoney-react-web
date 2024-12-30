@@ -36,12 +36,18 @@ const Header = (props) => {
             Statistics
           </a>
         </li>
-        <li className="menu-item">
-          {" "}
-          <span className="me-2">
-            <FontAwesomeIcon icon={faPeopleGroup} />
-          </span>{" "}
-          Recipient
+        <li
+          className={`menu-item ${props.activeTab === "recipient" && "active"}`}
+        >
+          <a
+            href="/recipient"
+            style={{ color: "white", textDecoration: "unset" }}
+          >
+            <span className="me-2">
+              <FontAwesomeIcon icon={faPeopleGroup} />
+            </span>{" "}
+            Recipient
+          </a>
         </li>
         <li className="menu-item">
           <span className="me-2">

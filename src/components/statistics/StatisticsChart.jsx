@@ -49,23 +49,29 @@ const StatisticsChart = () => {
             <button className="btn btn-link text-secondary">Sent</button>
           </div>
         </div>
-        <div>
-          <h3 className="text-primary">ETB 5780.32</h3>
-          <p>Average weekly spend</p>
-          <h3 className="text-primary">ETB 1970.57</h3>
-          <p>Spend this week</p>
-        </div>
       </header>
       <div>
         <h6 className="fw-bold">Spending Activity</h6>
-        <div className="d-flex justify-content-between align-items-center mb-3">
-          <span>This Week</span>
-          <select className="form-select w-auto">
-            <option value="this-week">This Week</option>
-            <option value="last-week">Last Week</option>
-          </select>
+        <div className="row">
+          <div className="col-6">
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <span>This Week</span>
+              <select className="form-select w-auto">
+                <option value="this-week">This Week</option>
+                <option value="last-week">Last Week</option>
+              </select>
+            </div>
+            <Bar data={barData} options={barOptions} />
+          </div>
+          <div className="col-6">
+            <div>
+              <h3 className="text-primary">ETB 5780.32</h3>
+              <p>Average weekly spend</p>
+              <h3 className="text-primary">ETB 1970.57</h3>
+              <p>Spend this week</p>
+            </div>
+          </div>
         </div>
-        <Bar data={barData} options={barOptions} />
       </div>
     </main>
   );
