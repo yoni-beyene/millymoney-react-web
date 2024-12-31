@@ -49,11 +49,13 @@ const Header = (props) => {
             Recipient
           </a>
         </li>
-        <li className="menu-item">
-          <span className="me-2">
-            <FontAwesomeIcon icon={faCreditCard} />
-          </span>{" "}
-          Cards
+        <li className={`menu-item ${props.activeTab === "card" && "active"}`}>
+          <a href="/card" style={{ color: "white", textDecoration: "unset" }}>
+            <span className="me-2">
+              <FontAwesomeIcon icon={faCreditCard} />
+            </span>{" "}
+            Cards
+          </a>
         </li>
         <li className="menu-item">
           <span className="me-2">

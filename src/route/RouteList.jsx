@@ -5,6 +5,7 @@ import RegisterPage from "../pages/register/RegisterPage";
 import StatisticsPage from "../pages/statistics/StatisticsPage";
 import VerificationPage from "../pages/verificationPage/VerificationPage";
 import { createBrowserRouter } from "react-router-dom";
+import CardsPage from "../pages/card/CardPages";
 
 const RouteList = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const RouteList = createBrowserRouter([
       {
         path: "/recipient",
         element: <RecipientPage />,
+      },
+      {
+        path: "/card",
+        element: <CardsPage />,
       },
     ],
     // errorElement: (
