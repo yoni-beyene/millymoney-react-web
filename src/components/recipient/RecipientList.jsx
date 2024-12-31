@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import RecipientModal from "./RecipientModal ";
+import RecipientModal from "./RecipientModal";
 import { useState } from "react";
 
 const RecipientList = (props) => {

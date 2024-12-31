@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const RecipientModal = ({ recipient, show, onClose }) => {
   if (!recipient) return null;
 
@@ -73,5 +75,11 @@ const RecipientModal = ({ recipient, show, onClose }) => {
       </div>
     </div>
   );
+};
+
+RecipientModal.propTypes = {
+  recipient: PropTypes.object.isrequeired,
+  show: PropTypes.bool.isrequeired,
+  onClose: PropTypes.func.isrequeired,
 };
 export default RecipientModal;

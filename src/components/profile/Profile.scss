@@ -1,0 +1,94 @@
+.profile-container {
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    text-align: center;
+  
+    .profile-header {
+      .profile-picture {
+        margin: 0 auto 10px;
+        img {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+      }
+  
+      .profile-name {
+        font-size: 20px;
+        color: #333;
+        margin: 5px 0;
+      }
+  
+      .profile-email {
+        font-size: 14px;
+        color: #666;
+      }
+    }
+  
+    .profile-options {
+      margin-top: 20px;
+  
+      .option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 20px;
+        border: 1px solid #f0f0f0;
+        border-radius: 8px;
+        margin: 8px 0;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+  
+        &:hover {
+          background-color: #f9f9f9;
+        }
+  
+        span {
+          font-size: 16px;
+          color: #333;
+        }
+  
+        .icon {
+          font-size: 18px;
+  
+          &.personal-details {
+            content: url('https://via.placeholder.com/18'); // Replace with personal details icon
+          }
+  
+          &.linked-cards {
+            content: url('https://via.placeholder.com/18'); // Replace with linked cards icon
+          }
+  
+          &.notifications {
+            content: url('https://via.placeholder.com/18'); // Replace with notifications icon
+          }
+  
+          &.security {
+            content: url('https://via.placeholder.com/18'); // Replace with security icon
+          }
+  
+          &.logout-icon {
+            color: red;
+          }
+  
+          &.arrow {
+            content: url('https://via.placeholder.com/10'); // Replace with arrow icon
+          }
+        }
+  
+        &.logout {
+          color: red;
+          .icon.logout-icon {
+            font-size: 18px;
+          }
+        }
+      }
+    }
+  }
+  

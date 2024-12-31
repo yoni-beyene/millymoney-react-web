@@ -49,19 +49,26 @@ const Header = (props) => {
             Recipient
           </a>
         </li>
-        <li className={`menu-item ${props.activeTab === "card" && "active"}`}>
-          <a href="/card" style={{ color: "white", textDecoration: "unset" }}>
+        <li className={`menu-item ${props.activeTab === "cards" && "active"}`}>
+          <a href="/cards" style={{ color: "white", textDecoration: "unset" }}>
             <span className="me-2">
               <FontAwesomeIcon icon={faCreditCard} />
             </span>{" "}
             Cards
           </a>
         </li>
-        <li className="menu-item">
-          <span className="me-2">
-            <FontAwesomeIcon icon={faUser} />
-          </span>{" "}
-          Profile
+        <li
+          className={`menu-item ${props.activeTab === "profile" && "active"}`}
+        >
+          <a
+            href="/profile"
+            style={{ color: "white", textDecoration: "unset" }}
+          >
+            <span className="me-2">
+              <FontAwesomeIcon icon={faUser} />
+            </span>{" "}
+            Profile
+          </a>
         </li>
       </ul>
       <div className="logout">
@@ -74,6 +81,6 @@ const Header = (props) => {
   );
 };
 Header.propTypes = {
-  activeTab: PropTypes.object.isRequired,
+  activeTab: PropTypes.string.isRequired,
 };
 export default Header;

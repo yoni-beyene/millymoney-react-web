@@ -6,6 +6,7 @@ import StatisticsPage from "../pages/statistics/StatisticsPage";
 import VerificationPage from "../pages/verificationPage/VerificationPage";
 import { createBrowserRouter } from "react-router-dom";
 import CardsPage from "../pages/card/CardPages";
+import ProfilePage from "../pages/profile/ProfilePage";
 
 const RouteList = createBrowserRouter([
   {
@@ -39,8 +40,12 @@ const RouteList = createBrowserRouter([
         element: <RecipientPage />,
       },
       {
-        path: "/card",
+        path: "/cards",
         element: <CardsPage />,
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
       },
     ],
     // errorElement: (
