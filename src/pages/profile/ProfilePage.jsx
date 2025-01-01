@@ -6,7 +6,6 @@ const ProfilePage = () => {
     <div className="home-container">
       <Header activeTab="profile" />
       <Profile />
-      <h1>Profile</h1>
     </div>
   );
 };

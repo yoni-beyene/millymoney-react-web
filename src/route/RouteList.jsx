@@ -3,7 +3,7 @@ import LoginPage from "../pages/login/LoginPage";
 import RecipientPage from "../pages/recipient/RecipientPage";
 import RegisterPage from "../pages/register/RegisterPage";
 import StatisticsPage from "../pages/statistics/StatisticsPage";
-import VerificationPage from "../pages/verificationPage/VerificationPage";
+import VerificationPage from "../pages/verification/VerificationPage";
 import { createBrowserRouter } from "react-router-dom";
 import CardsPage from "../pages/card/CardPages";
 import ProfilePage from "../pages/profile/ProfilePage";

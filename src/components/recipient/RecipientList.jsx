@@ -1,54 +1,42 @@
 import PropTypes from "prop-types";
-import RecipientModal from "./RecipientModal";
-import { useState } from "react";
+import PrimaryButton from "../shared/primaryButton/PrimaryButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronRight, faSearch } from "@fortawesome/free-solid-svg-icons";
 
-const RecipientList = (props) => {
-  const [selectedRecipient, setSelectedRecipient] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-
-  const handleRecipientClick = (recipient) => {
-    setSelectedRecipient(recipient);
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setSelectedRecipient(null);
-  };
-
+const RecipientList = ({ handleRecipientClick, recipients }) => {
   return (
-    <div className="container mt-5">
-      <header className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="fw-bold">Recipient</h1>
-        <button className="btn btn-primary px-4 py-2">
-          <i className="bi bi-plus"></i> Add Recipient
-        </button>
-      </header>
-      <div className="mb-4">
-        <div className="input-group">
+    <main className="content p-5">
+      <section className="amount-section d-flex justify-content-between w-100">
+        <div className="amount-input-container" style={{ maxWidth: "400px" }}>
           <input
             type="text"
-            className="form-control"
-            placeholder="Search..."
-            aria-label="Search"
+            placeholder="Amount"
+            className="amount-input"
+            style={{ maxWidth: "400px" }}
           />
-          <button className="btn btn-outline-secondary" type="button">
-            <i className="bi bi-search"></i>
-          </button>
+          <div className="currency">
+            <FontAwesomeIcon icon={faSearch} />
+          </div>
         </div>
-      </div>
+        <div style={{ width: "200px" }}>
+          <PrimaryButton
+            text="Add Recipient"
+            onClick={() => {}}
+            isLoading={false}
+          />
+        </div>
+      </section>
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <span>All Recipient</span>
-        <select className="form-select w-auto">
+        <select className="form-select w-auto select-recipient-options">
           <option value="all">All Recipient</option>
           <option value="recent">Recently Added</option>
         </select>
       </div>
-      <ul className="list-group">
-        {props.recipients.map((recipient, index) => (
+      <ul className="list-group ">
+        {recipients.map((recipient, index) => (
           <button
             key={index + 1}
-            className="list-group-item d-flex justify-content-between align-items-center"
+            className="list-group-item d-flex justify-content-between align-items-center my-2"
             onClick={() => handleRecipientClick(recipient)}
             style={{ cursor: "pointer" }}
           >
@@ -57,26 +45,22 @@ const RecipientList = (props) => {
                 src={recipient.image}
                 alt="Recipient Avatar"
                 className="rounded-circle me-3"
-                style={{ width: "40px", height: "40px" }}
+                style={{ width: "50px", height: "50px" }}
               />
               <div>
                 <h6 className="mb-0">{recipient.name}</h6>
                 <small className="text-muted">{recipient.number}</small>
               </div>
             </div>
-            <i className="bi bi-chevron-right"></i>
+            <FontAwesomeIcon icon={faChevronRight} color="#895cfe" />
           </button>
         ))}
       </ul>
-      <RecipientModal
-        recipient={selectedRecipient}
-        show={showModal}
-        onClose={handleCloseModal}
-      />
-    </div>
+    </main>
   );
 };
 RecipientList.propTypes = {
   recipients: PropTypes.object.isrequeired,
+  handleRecipientClick: PropTypes.func.isRequired,
 };
 export default RecipientList;

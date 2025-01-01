@@ -20,11 +20,14 @@ const Home = () => {
           </div>
         </div>
         <div style={{ width: "700px" }}>
-          <PrimaryButton
-            text="Send Money"
-            onClick={() => {}}
-            isLoading={false}
-          />
+          <span style={{ borderRadius: "60px" }}>
+            <PrimaryButton
+              text="Send Money"
+              onClick={() => {}}
+              isLoading={false}
+              borderRadius={40}
+            />
+          </span>
         </div>
       </section>
       <SuggestionActions />

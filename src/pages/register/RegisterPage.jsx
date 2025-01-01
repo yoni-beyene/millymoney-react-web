@@ -29,15 +29,7 @@ const RegisterPage = () => {
               className="container justify-content-center d-flex align-items-center"
               style={{ height: "100vh" }}
             >
-              <div className="login-container px-5">
-                <div className="topWrapper d-flex">
-                  <button
-                    onClick={() => navigation.navigate("login")}
-                    className="backButton"
-                  >
-                    <FontAwesomeIcon icon={faArrowLeft} fontSize={25} />
-                  </button>
-                </div>
+              <div className="login-container px-5 w-75">
                 <div className="hero">
                   <h1 className="heroText">Create Account</h1>
                   <p className="subHero">
@@ -81,7 +73,7 @@ const RegisterPage = () => {
                     errors,
                     touched,
                   }) => (
-                    <div className="inputWrapper">
+                    <div className="inputWrapper w-75">
                       <div className="inputArea">
                         <label
                           htmlFor="firstName"

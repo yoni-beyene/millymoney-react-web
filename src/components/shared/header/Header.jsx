@@ -13,63 +13,64 @@ const Header = (props) => {
   return (
     <aside className="sidebar pt-5">
       <ul className="menu">
-        <li className={`menu-item ${props.activeTab === "home" && "active"}`}>
-          <a href="/home" style={{ color: "white", textDecoration: "unset" }}>
+        <a href="/home" style={{ color: "white", textDecoration: "unset" }}>
+          <li className={`menu-item ${props.activeTab === "home" && "active"}`}>
             <span className="me-2">
               <FontAwesomeIcon icon={faHome} />
             </span>{" "}
             Home
-          </a>
-        </li>
-        <li
-          className={`menu-item ${
-            props.activeTab === "statistics" && "active"
-          }`}
+          </li>
+        </a>
+        <a
+          href="/statistics"
+          style={{ color: "white", textDecoration: "unset" }}
         >
-          <a
-            href="/statistics"
-            style={{ color: "white", textDecoration: "unset" }}
+          <li
+            className={`menu-item ${
+              props.activeTab === "statistics" && "active"
+            }`}
           >
             <span className="me-2">
               <FontAwesomeIcon icon={faChartSimple} />
             </span>{" "}
             Statistics
-          </a>
-        </li>
-        <li
-          className={`menu-item ${props.activeTab === "recipient" && "active"}`}
+          </li>
+        </a>
+        <a
+          href="/recipient"
+          style={{ color: "white", textDecoration: "unset" }}
         >
-          <a
-            href="/recipient"
-            style={{ color: "white", textDecoration: "unset" }}
+          <li
+            className={`menu-item ${
+              props.activeTab === "recipient" && "active"
+            }`}
           >
             <span className="me-2">
               <FontAwesomeIcon icon={faPeopleGroup} />
             </span>{" "}
             Recipient
-          </a>
-        </li>
-        <li className={`menu-item ${props.activeTab === "cards" && "active"}`}>
-          <a href="/cards" style={{ color: "white", textDecoration: "unset" }}>
+          </li>
+        </a>
+        <a href="/cards" style={{ color: "white", textDecoration: "unset" }}>
+          <li
+            className={`menu-item ${props.activeTab === "cards" && "active"}`}
+          >
             <span className="me-2">
               <FontAwesomeIcon icon={faCreditCard} />
             </span>{" "}
             Cards
-          </a>
-        </li>
-        <li
-          className={`menu-item ${props.activeTab === "profile" && "active"}`}
-        >
-          <a
-            href="/profile"
-            style={{ color: "white", textDecoration: "unset" }}
+          </li>
+        </a>
+        <a href="/profile" style={{ color: "white", textDecoration: "unset" }}>
+          <li
+            className={`menu-item ${props.activeTab === "profile" && "active"}`}
           >
             <span className="me-2">
               <FontAwesomeIcon icon={faUser} />
             </span>{" "}
             Profile
-          </a>
-        </li>
+          </li>
+        </a>
       </ul>
       <div className="logout">
         <span className="me-2">

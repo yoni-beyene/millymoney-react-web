@@ -1,0 +1,158 @@
+.select-recipient-options {
+  border: unset !important;
+}
+.recipient-container {
+  margin: 0 auto;
+  font-family: "Arial", sans-serif;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .back-button {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .bell-icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+  }
+
+  .profile-section {
+    text-align: center;
+    margin-bottom: 20px;
+
+    .profile-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      margin: 5px 0;
+      font-size: 1.2rem;
+    }
+
+    .account-number {
+      color: gray;
+      font-size: 0.9rem;
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+
+    .action {
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &.send {
+        background: #6c63ff;
+        color: #fff;
+      }
+
+      &.receive {
+        background: #6c63ff;
+        color: #fff;
+      }
+
+      &.remove {
+        background: white;
+        border: 1px solid #6c63ff;
+        color: #6c63ff;
+      }
+    }
+    .icon-sub-text {
+      color: #895cfe;
+      font-size: 15px;
+    }
+  }
+  .brand-color-text {
+    color: #895cfe;
+  }
+  .back-icon {
+    cursor: pointer;
+    height: 20px;
+    align-items: start;
+    width: 50px;
+  }
+
+  .account-details {
+    margin-bottom: 20px;
+    max-width: 800px;
+
+    h4 {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .details {
+      p {
+        display: flex;
+        justify-content: space-between;
+        margin: 5px 0;
+
+        span {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .recent-transactions {
+    h4 {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .transaction {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+
+      .icon {
+        font-size: 1.2rem;
+        margin-right: 10px;
+      }
+
+      .details {
+        flex: 1;
+
+        p {
+          margin: 0;
+          font-size: 1rem;
+        }
+
+        span {
+          color: gray;
+          font-size: 0.8rem;
+        }
+      }
+
+      .amount {
+        font-weight: bold;
+        font-size: 1rem;
+      }
+    }
+  }
+}

@@ -121,20 +121,12 @@ const VerificationPage = () => {
               className="container justify-content-center d-flex align-items-center"
               style={{ height: "100vh" }}
             >
-              <div className="login-container px-5">
-                <div className="topWrapper d-flex">
-                  <button
-                    onClick={() => navigation.navigate("login")}
-                    className="backButton"
-                  >
-                    <FontAwesomeIcon icon={faArrowLeft} fontSize={25} />
-                  </button>
-                </div>
+              <div className="login-container px-5 w-100">
                 <div className="hero">
                   <h1>Verification Code</h1>
                   <p>We have sent the verification code to your phone.</p>
                 </div>
-                <div className="inputBoxes w-100">
+                <div className="inputBoxes w-75">
                   {code.map((value, index) => (
                     <div key={index} className="singleBox">
                       <input
@@ -160,7 +152,7 @@ const VerificationPage = () => {
                     Resend
                   </button>
                 </div>
-                <div className="confirmSection">
+                <div className="confirmSection w-75">
                   <PrimaryButton
                     text="Verify"
                     onClick={handleVerify}

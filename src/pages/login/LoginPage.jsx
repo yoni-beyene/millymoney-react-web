@@ -35,7 +35,7 @@ const LoginPage = () => {
               className="container justify-content-center d-flex align-items-center"
               style={{ height: "100vh" }}
             >
-              <div className="login-container px-5">
+              <div className="login-container px-5 w-75">
                 <div className="logo-wrapper">
                   <img src="/assets/logo.png" alt="Logo" className="logo" />
                 </div>

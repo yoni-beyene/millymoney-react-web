@@ -1,12 +1,21 @@
 import PropTypes from "prop-types";
 import "./PrimaryButton.scss";
 
-const PrimaryButton = ({ text, onClick, isLoading, disabled }) => {
+const PrimaryButton = ({
+  text,
+  onClick,
+  isLoading,
+  disabled,
+  borderRadius,
+}) => {
   return (
     <button
       className={`primary-button ${disabled ? "disabled" : ""}`}
       onClick={onClick}
       disabled={disabled}
+      style={
+        borderRadius ? { borderRadius: borderRadius } : { borderRadius: "16px" }
+      }
     >
       {isLoading ? (
         <div className="spinner"></div>
@@ -22,6 +31,7 @@ PrimaryButton.propTypes = {
   onClick: PropTypes.func.isRequired,
   isLoading: PropTypes.bool,
   disabled: PropTypes.bool,
+  borderRadius: PropTypes.number,
 };
 
 PrimaryButton.defaultProps = {
