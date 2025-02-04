@@ -1,0 +1,58 @@
+.enter-amount-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f5f2fd;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #000;
+}
+
+.amount-input {
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  width: 50%;
+}
+
+.converted,
+.bonus {
+  font-size: 1.2rem;
+  color: #895cfe;
+}
+
+.next-button {
+  padding: 0.5rem 1rem;
+  background-color: #895cfe;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.next-button:hover {
+  background-color: #6b46d1;
+}
+
+// styles/EnterRecipient.scss
+.enter-recipient-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f5f2fd;
+}
+
+.recipient-input {
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  width: 50%;
+}

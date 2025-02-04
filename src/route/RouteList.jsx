@@ -7,6 +7,8 @@ import VerificationPage from "../pages/verification/VerificationPage";
 import { createBrowserRouter } from "react-router-dom";
 import CardsPage from "../pages/card/CardPages";
 import ProfilePage from "../pages/profile/ProfilePage";
+import EnterAmount from "../components/sendMoney/EnterAmount";
+import EnterRecipient from "../components/sendMoney/EnterRecipient";
 
 const RouteList = createBrowserRouter([
   {
@@ -46,6 +48,14 @@ const RouteList = createBrowserRouter([
       {
         path: "/profile",
         element: <ProfilePage />,
+      },
+      {
+        path: "/send-money/enter-amount",
+        element: <EnterAmount />,
+      },
+      {
+        path: "/send-money/enter-recipient",
+        element: <EnterRecipient />,
       },
     ],
     // errorElement: (

@@ -1,8 +1,14 @@
 import PrimaryButton from "../shared/primaryButton/PrimaryButton";
-import SuggestionActions from "./SuggestionActions";
 import Transaction from "./Transaction";
-
-const Home = () => {
+import PropTypes from "prop-types";
+import {
+  faArrowDown,
+  faArrowUp,
+  faPlus,
+  faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+const Home = ({ setHomeContent }) => {
   return (
     <main className="content p-5">
       <header className="header">
@@ -30,9 +36,42 @@ const Home = () => {
           </span>
         </div>
       </section>
-      <SuggestionActions />
+      <section className="actions-section">
+        <h5>Suggestion Actions</h5>
+        <div className="actions">
+          <div className="action-item ">
+            <FontAwesomeIcon icon={faPlus} />
+            Add
+          </div>
+          <div
+            className="action-item"
+            onClick={() => setHomeContent("transferMoney")}
+          >
+            <span style={{ rotate: "-90deg" }}>
+              <FontAwesomeIcon icon={faRightFromBracket} />
+            </span>{" "}
+            Send
+          </div>
+          <div className="action-item">
+            <span style={{ rotate: "90deg" }}>
+              <FontAwesomeIcon icon={faRightFromBracket} />
+            </span>{" "}
+            Receive
+          </div>
+          <div className="action-item">
+            <span>
+              <FontAwesomeIcon icon={faArrowUp} />
+              <FontAwesomeIcon icon={faArrowDown} />
+            </span>{" "}
+            History
+          </div>
+        </div>
+      </section>{" "}
       <Transaction />
     </main>
   );
+};
+Home.propTypes = {
+  setHomeContent: PropTypes.func.isRequired,
 };
 export default Home;
