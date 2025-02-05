@@ -4,7 +4,10 @@ import { faArrowLeft, faBell } from "@fortawesome/free-solid-svg-icons";
 import PrimaryButton from "../shared/primaryButton/PrimaryButton";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-
+import "./home.scss";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import HTTPService from "../../services/shared/HTTPService";
 const TransferMoney = ({ setHomeContent }) => {
   const validationSchema = Yup.object({
     transferTo: Yup.string().required("Required"),
@@ -15,6 +18,25 @@ const TransferMoney = ({ setHomeContent }) => {
     recipientName: Yup.string().required("Required"),
     reference: Yup.string().optional(),
   });
+
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
+  const [banks, setBanks] = useState([]);
+
+  useEffect(() => {
+    HTTPService.post("/bank/all-banks-with-exchange")
+      .then((res) => {
+        setIsLoading(false);
+        setBanks(res.data.banks);
+      })
+      .catch((err) => {
+        alert(err.response.data.err);
+      });
+  }, []);
+
+  const selectBank = (bank) => {
+    setIsLoading(true);
+  };
   return (
     <main className="content p-5">
       <div className="recipient-container card p-5">
@@ -43,8 +65,18 @@ const TransferMoney = ({ setHomeContent }) => {
             <Form onSubmit={handleSubmit}>
               <div className="row mb-3">
                 <div className="col-md-6">
-                  <label className="form-label">Transfer To</label>
-                  <Field as="select" name="transferTo" className="form-select">
+                  <label
+                    className="form-label money-transfer-input-label"
+                    htmlFor="transfer-to"
+                  >
+                    Transfer To
+                  </label>
+                  <Field
+                    as="select"
+                    name="transferTo"
+                    className="form-select money-transfer-input"
+                    id="transfer-to"
+                  >
                     <option value="">Select Transfer Type</option>
                     <option value="account">Transfer to Account</option>
                   </Field>
@@ -55,10 +87,24 @@ const TransferMoney = ({ setHomeContent }) => {
                   />
                 </div>
                 <div className="col-md-6">
-                  <label className="form-label">Bank Name</label>
-                  <Field as="select" name="bankName" className="form-select">
+                  <label
+                    className="form-label money-transfer-input-label"
+                    htmlFor="bank-name"
+                  >
+                    Bank Name
+                  </label>
+                  <Field
+                    as="select"
+                    name="bankName"
+                    className="form-select money-transfer-input"
+                    id="bank-name"
+                  >
                     <option value="">Select Bank</option>
-                    <option value="bank1">Bank Name</option>
+                    {banks.map((bank) => (
+                      <option value={bank.id} key={bank.id}>
+                        {bank.bankName}
+                      </option>
+                    ))}
                   </Field>
                   <ErrorMessage
                     name="bankName"
@@ -69,12 +115,18 @@ const TransferMoney = ({ setHomeContent }) => {
               </div>
               <div className="row mb-3">
                 <div className="col-md-6">
-                  <label className="form-label">Account Number</label>
+                  <label
+                    className="form-label money-transfer-input-label"
+                    htmlFor="account-number"
+                  >
+                    Account Number
+                  </label>
                   <Field
                     type="text"
                     name="accountNumber"
-                    className="form-control"
+                    className="form-control money-transfer-input"
                     placeholder="Account Number"
+                    id="account-number"
                   />
                   <ErrorMessage
                     name="accountNumber"
@@ -83,12 +135,18 @@ const TransferMoney = ({ setHomeContent }) => {
                   />
                 </div>
                 <div className="col-md-6">
-                  <label className="form-label">Recipient Name</label>
+                  <label
+                    className="form-label money-transfer-input-label"
+                    htmlFor="recipient-name"
+                  >
+                    Recipient Name
+                  </label>
                   <Field
                     type="text"
                     name="recipientName"
-                    className="form-control"
+                    className="form-control money-transfer-input"
                     placeholder="Recipient Name"
+                    id="recipient-name"
                   />
                   <ErrorMessage
                     name="recipientName"
@@ -98,18 +156,24 @@ const TransferMoney = ({ setHomeContent }) => {
                 </div>
               </div>
               <div className="mb-3">
-                <label className="form-label">Reference</label>
+                <label
+                  className="form-label money-transfer-input-label"
+                  htmlFor="reference"
+                >
+                  Reference
+                </label>
                 <Field
                   type="text"
                   name="reference"
-                  className="form-control"
+                  className="form-control money-transfer-input"
                   placeholder="Reference"
+                  id="reference"
                 />
               </div>
               <div className="w-100 d-flex justify-content-center mt-5">
                 <div style={{ width: "400px" }}>
                   <PrimaryButton
-                    text="Save Card"
+                    text="Send Money"
                     onClick={() => {}}
                     isLoading={false}
                   />
