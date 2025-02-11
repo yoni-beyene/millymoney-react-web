@@ -80,6 +80,7 @@ const VerificationPage = () => {
           screenHeight: window.innerHeight,
           screenWidth: window.innerWidth,
           ipAddress: "127.0.0.1",
+          deviceModel: "WEB",
         };
         const res = await HTTPService.post(
           `/sender/verify-otp/${optData.otp.phoneNumber}/${code.join("")}`,
@@ -116,17 +117,17 @@ const VerificationPage = () => {
     <div className="container-fluid">
       <div className="row">
         <div className="col-md-6 d-flex flex-column justify-content-center align-items-center">
-          <div className="login-page-container">
+          <div className="login-page-container ">
             <div
               className="container justify-content-center d-flex align-items-center"
               style={{ height: "100vh" }}
             >
-              <div className="login-container px-5 w-100">
+              <div className="login-container px-5 w-50 card px-5 py-5">
                 <div className="hero">
                   <h1>Verification Code</h1>
                   <p>We have sent the verification code to your phone.</p>
                 </div>
-                <div className="inputBoxes w-75">
+                <div className="inputBoxes w-100">
                   {code.map((value, index) => (
                     <div key={index} className="singleBox">
                       <input
