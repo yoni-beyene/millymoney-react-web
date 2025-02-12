@@ -14,7 +14,7 @@ const loginSchema = yup.object({
     .string()
     .min(8, "Phone Number too Short")
     .max(14, "Phone number too Long")
-    .required(),
+    .required("Phone number is required"),
 });
 
 const LoginPage = () => {
@@ -84,8 +84,8 @@ const LoginPage = () => {
                         onChange={props.handleChange("phone")}
                       />
                       <div className="input-wrapper">
-                        <div className="input-wrapper-phone">
-                          <p className="error-text">
+                        <div className="input-wrapper-phone d-flex mt-1">
+                          <p className="text-danger">
                             {props.touched.phone && props.errors.phone}
                           </p>
                         </div>

@@ -8,7 +8,14 @@ import {
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+
 const Home = ({ setHomeContent }) => {
+  const [amount, setAmount] = useState("");
+
+  const sendMoneyHandler = () => {};
+
   return (
     <main className="content p-5">
       <header className="header">
@@ -20,7 +27,12 @@ const Home = ({ setHomeContent }) => {
       </header>
       <section className="amount-section">
         <div className="amount-input-container">
-          <input type="text" placeholder="Amount" className="amount-input" />
+          <input
+            placeholder="Amount"
+            className="amount-input mt-3"
+            type="number"
+            onChange={(value) => setAmount(value.target.value)}
+          />
           <div className="currency">
             <img src="https://flagcdn.com/us.svg" alt="USD" /> USD
           </div>

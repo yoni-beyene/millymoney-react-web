@@ -7,8 +7,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { globalActionType } from "../../store/action/shared/globalAction";
 import WelcomeCarousel from "../../components/welcomeCarousel/WelcomeCarousel";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const VerificationPage = () => {
+  const navigate = useNavigate();
+
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(60);
   const [resendDisabled, setResendDisabled] = useState(true);
@@ -75,7 +78,7 @@ const VerificationPage = () => {
       try {
         const verifyOptRequest = {
           deviceName: "Browser",
-          deviceType: "WEB",
+          deviceType: "DESKTOP",
           appVersion: "1.0.0",
           screenHeight: window.innerHeight,
           screenWidth: window.innerWidth,
@@ -95,9 +98,9 @@ const VerificationPage = () => {
         });
 
         if (optData.userExists) {
-          alert("Navigating to the home page...");
+          navigate("/home");
         } else {
-          navigation.navigate("fillIn");
+          navigate("/fill-in");
         }
       } catch (err) {
         setIsLoading(false);
