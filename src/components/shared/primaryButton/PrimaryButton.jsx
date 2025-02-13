@@ -16,6 +16,7 @@ const PrimaryButton = ({
       style={
         borderRadius ? { borderRadius: borderRadius } : { borderRadius: "16px" }
       }
+      type="button"
     >
       {isLoading ? (
         <div className="spinner"></div>

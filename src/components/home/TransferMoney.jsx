@@ -6,35 +6,39 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./home.scss";
 import { useEffect, useState, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import HTTPService from "../../services/shared/HTTPService";
 import LoadingPage from "../shared/loadingPage/LoadingPage";
+import { sendMoneyAction } from "../../store/action/sendMoneyAction";
 const TransferMoney = ({ setHomeContent }) => {
   const formikRef = useRef();
 
   const validationSchema = Yup.object({
-    transferTo: Yup.string(),
-    bankName: Yup.string().required("Required"),
+    transferTo: Yup.string().optional(),
+    bankName: Yup.number().required("Required"),
     accountNumber: Yup.string()
       .matches(/^[0-9]+$/, "Must be a number")
       .required("Required"),
     recipientName: Yup.string().required("Required"),
     reference: Yup.string().optional(),
   });
-
+  const amount = useSelector((state) => state.sendeMoney.amount);
+  const senderId = useSelector((state) => state.global.senderId);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedBank, setSelectedBank] = useState(null);
   const [banks, setBanks] = useState([]);
-  const [accountNumberDetail, setAccountNumberDetail] = useState([]);
+  const [recipient, setRecipient] = useState();
 
   const fetchNameFromAPI = (accountNumber) => {
-    if (accountNumber === "") {
-      console.log("Error");
+    if (accountNumber === "" || selectedBank === null) {
+      alert("Error");
     } else {
       setIsLoading(true);
-      HTTPService.post("/bank/bank-customer/1/" + accountNumber)
+      HTTPService.post(
+        "/bank/bank-customer/" + selectedBank?.id + "/" + accountNumber
+      )
         .then((res) => {
-          setAccountNumberDetail(res.data.customer);
           formikRef.current.setFieldValue(
             "recipientName",
             res.data.customer.firstName +
@@ -43,6 +47,8 @@ const TransferMoney = ({ setHomeContent }) => {
               " " +
               res.data.customer.lastName
           );
+          setRecipient(res.data.customer);
+
           setIsLoading(false);
         })
         .catch((err) => {
@@ -62,10 +68,32 @@ const TransferMoney = ({ setHomeContent }) => {
         alert(err.response.data.err);
       });
   }, []);
+  const [isOpen, setIsOpen] = useState(false);
 
-  // const selectBank = (bank) => {
-  //   setIsLoading(true);
-  // };
+  const onSubmitForm = (values) => {
+    dispatch({
+      type: sendMoneyAction.UPDATE_NEW_REMIT_FIELDS,
+      payload: {
+        channel: "BANK",
+        channelCode: selectedBank.bankCode,
+        exchangeRate: selectedBank.ExchangeRates[0].rate,
+        fromCurrency: selectedBank.ExchangeRates[0].exchangeFrom,
+        toCurrency: selectedBank.ExchangeRates[0].exchangeTo,
+        senderId: senderId,
+        bankName: selectedBank.bankName,
+        accountNumber: recipient?.accountNumber,
+        accountHolderFirstName: recipient?.firstName,
+        accountHolderMiddle: recipient?.middleName,
+        accountHolderLastName: recipient?.lastName,
+        exchangeAmount:
+          parseFloat(amount) * parseFloat(selectedBank.ExchangeRates[0].rate),
+        reason: values?.reference,
+        appliedFee: "0",
+      },
+    });
+    setHomeContent("paymentReview");
+  };
+
   return (
     <>
       {isLoading && <LoadingPage />}
@@ -80,7 +108,6 @@ const TransferMoney = ({ setHomeContent }) => {
             <h2>Transfer Money</h2>
             <FontAwesomeIcon icon={faBell} />
           </div>
-
           <Formik
             innerRef={formikRef}
             initialValues={{
@@ -91,11 +118,29 @@ const TransferMoney = ({ setHomeContent }) => {
               reference: "",
             }}
             validationSchema={validationSchema}
-            onSubmit={(values) => console.log(values)}
+            onSubmit={(values) => onSubmitForm(values)}
           >
-            {({ values, handleSubmit }) => (
+            {({ values, handleSubmit, setFieldValue }) => (
               <Form onSubmit={handleSubmit}>
                 <div className="row mb-3">
+                  <div className="col-md-6">
+                    <label
+                      className="form-label money-transfer-input-label"
+                      htmlFor="transfer-to"
+                    >
+                      Amount
+                    </label>
+                    <input
+                      className="form-control money-transfer-input"
+                      readOnly
+                      value={amount}
+                    />
+                    <ErrorMessage
+                      name="transferTo"
+                      component="div"
+                      className="text-danger"
+                    />
+                  </div>
                   <div className="col-md-6">
                     <label
                       className="form-label money-transfer-input-label"
@@ -117,6 +162,8 @@ const TransferMoney = ({ setHomeContent }) => {
                       className="text-danger"
                     />
                   </div>
+                </div>
+                <div className="row mb-3">
                   <div className="col-md-6">
                     <label
                       className="form-label money-transfer-input-label"
@@ -124,27 +171,62 @@ const TransferMoney = ({ setHomeContent }) => {
                     >
                       Bank Name
                     </label>
-                    <Field
-                      as="select"
-                      name="bankName"
-                      className="form-select money-transfer-input"
-                      id="bank-name"
-                    >
-                      <option value="">Select Bank</option>
-                      {banks.map((bank) => (
-                        <option value={bank.id} key={bank.id}>
-                          {bank.bankName}
-                        </option>
-                      ))}
-                    </Field>
+                    <div>
+                      <div className=" form-select money-transfer-input">
+                        <div
+                          className="dropdown-header"
+                          onClick={() => setIsOpen(!isOpen)}
+                        >
+                          {selectedBank ? (
+                            <div className="selected-option">
+                              <img
+                                src={`https://testmilly.ecopiavaluechain.com/bank/bank-icon/${selectedBank.bankId}`}
+                                alt={selectedBank.bankName}
+                                className="bank-icon"
+                              />
+                              <span>
+                                {selectedBank.bankName} -{" "}
+                                {selectedBank.ExchangeRates[0].rate} ETB
+                              </span>
+                            </div>
+                          ) : (
+                            <span>Select a Bank</span>
+                          )}
+                        </div>
+                        {isOpen && (
+                          <div className="dropdown-list">
+                            {banks.map((bank) => (
+                              <div
+                                key={bank.id}
+                                className="dropdown-item"
+                                onClick={() => {
+                                  setFieldValue("bankName", bank.id);
+                                  setSelectedBank(bank);
+                                  setIsOpen(false);
+                                }}
+                              >
+                                <img
+                                  src={`https://testmilly.ecopiavaluechain.com/bank/bank-icon/${bank.bankId}`}
+                                  alt={bank.bankName}
+                                  className="bank-icon"
+                                />
+                                <span>
+                                  {bank.bankName} - {bank.ExchangeRates[0].rate}{" "}
+                                  ETB
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
                     <ErrorMessage
                       name="bankName"
                       component="div"
                       className="text-danger"
                     />
                   </div>
-                </div>
-                <div className="row mb-3">
                   <div className="col-md-6">
                     <label
                       className="form-label money-transfer-input-label"
@@ -162,7 +244,7 @@ const TransferMoney = ({ setHomeContent }) => {
                       />
                       <div style={{ width: "200px" }}>
                         <button
-                          className="primary-button ms-3 rounded"
+                          className="primary-outline-btn ms-3 rounded"
                           type="button"
                           onClick={() => fetchNameFromAPI(values.accountNumber)}
                         >
@@ -177,6 +259,8 @@ const TransferMoney = ({ setHomeContent }) => {
                       className="text-danger"
                     />
                   </div>
+                </div>
+                <div className=" row mb-3">
                   <div className="col-md-6">
                     <label
                       className="form-label money-transfer-input-label"
@@ -190,6 +274,7 @@ const TransferMoney = ({ setHomeContent }) => {
                       className="form-control money-transfer-input"
                       placeholder="Recipient Name"
                       id="recipient-name"
+                      readOnly
                     />
                     <ErrorMessage
                       name="recipientName"
@@ -197,27 +282,27 @@ const TransferMoney = ({ setHomeContent }) => {
                       className="text-danger"
                     />
                   </div>
-                </div>
-                <div className="mb-3">
-                  <label
-                    className="form-label money-transfer-input-label"
-                    htmlFor="reference"
-                  >
-                    Reference
-                  </label>
-                  <Field
-                    type="text"
-                    name="reference"
-                    className="form-control money-transfer-input"
-                    placeholder="Reference"
-                    id="reference"
-                  />
+                  <div className="col-md-6">
+                    <label
+                      className="form-label money-transfer-input-label"
+                      htmlFor="reference"
+                    >
+                      Reference
+                    </label>
+                    <Field
+                      type="text"
+                      name="reference"
+                      className="form-control money-transfer-input"
+                      placeholder="Reference"
+                      id="reference"
+                    />
+                  </div>
                 </div>
                 <div className="w-100 d-flex justify-content-center mt-5">
                   <div style={{ width: "400px" }}>
                     <PrimaryButton
                       text="Send Money"
-                      onClick={() => {}}
+                      onClick={() => onSubmitForm(values)}
                       isLoading={false}
                     />
                   </div>

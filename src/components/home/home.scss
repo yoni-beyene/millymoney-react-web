@@ -6,3 +6,60 @@
 .money-transfer-input-label {
   font-weight: bolder;
 }
+
+.dropdown-container {
+  position: relative;
+  width: 250px;
+}
+
+.dropdown-header {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.selected-option {
+  display: flex;
+  align-items: center;
+}
+
+.bank-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.dropdown-list {
+  position: absolute;
+  width: 47%;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  margin-top: 9px;
+  margin-left: -15px;
+}
+
+.dropdown-item {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background: #f1f1f1;
+}
+.primary-outline-btn {
+  padding: 14px 10px;
+  border: 1px solid #895cfe !important;
+  border: none;
+  color: #895cfe;
+  font-size: 16px;
+  text-align: center;
+  width: 100%;
+  background-color: transparent;
+}

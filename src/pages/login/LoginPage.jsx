@@ -47,7 +47,6 @@ const LoginPage = () => {
                   initialValues={{ phone: "" }}
                   validationSchema={loginSchema}
                   onSubmit={(values) => {
-                    debugger;
                     console.log(values);
                     setIsLoading(true);
                     HTTPService.post(`/sender/validate-sender/+${values.phone}`)

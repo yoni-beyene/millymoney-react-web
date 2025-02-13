@@ -1,19 +1,18 @@
 import { sendMoneyAction } from "../action/sendMoneyAction";
 
 const initialState = {
-  newRemit: {
-    amount: 100,
-    currencyCode: "USD",
-    channel: "",
-    channelCode: "",
-    senderId: "",
-    accountNumber: "",
-    accountHolderFirstName: "",
-    accountHolderLastName: "",
-    exchangeRate: "",
-    exchangeAmount: "",
-    appliedFee: "",
-  },
+  amount: 100,
+  currencyCode: "USD",
+  channel: "",
+  channelCode: "",
+  senderId: "",
+  accountNumber: "",
+  accountHolderFirstName: "",
+  accountHolderLastName: "",
+  exchangeRate: "",
+  exchangeAmount: "",
+  appliedFee: "",
+  homeContent: "default",
 };
 
 const sendMoneyReducer = (state = initialState, action) => {
@@ -21,12 +20,17 @@ const sendMoneyReducer = (state = initialState, action) => {
     case sendMoneyAction.UPDATE_AMOUNT:
       return {
         ...state,
-        showWelcomePage: action.showWelcomePage,
+        amount: action.amount,
       };
     case sendMoneyAction.UPDATE_NEW_REMIT_FIELDS:
       return {
-        ...state.newRemit,
+        ...state,
         ...action.payload,
+      };
+    case sendMoneyAction.UPDATE_HOME_PAGE_CONTENT:
+      return {
+        ...state,
+        homeContent: action.value,
       };
     default:
       return state;

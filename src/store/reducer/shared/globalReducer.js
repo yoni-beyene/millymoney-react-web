@@ -24,6 +24,7 @@ const globalReducer = (state = initialState, action) => {
         ...state,
         accessToken: action.accessToken,
         senderId: action.senderId,
+        sender: action.sender,
       };
     default:
       return state;

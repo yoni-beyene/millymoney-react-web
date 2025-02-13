@@ -95,6 +95,7 @@ const VerificationPage = () => {
           type: globalActionType.SAVE_TOKEN,
           accessToken: res.data.token,
           senderId: res.data.sender.senderId,
+          sender: res.data.sender,
         });
 
         if (optData.userExists) {
