@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { sendMoneyAction } from "../../store/action/sendMoneyAction";
 
 const Home = ({ setHomeContent }) => {
@@ -30,13 +30,23 @@ const Home = ({ setHomeContent }) => {
       setHomeContent("transferMoney");
     }
   };
-
+  const getGreeting = () => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) {
+      return "Good Morning!";
+    } else if (currentHour < 18) {
+      return "Good Afternoon!";
+    } else {
+      return "Good Evening!";
+    }
+  };
+  const userData = useSelector((state) => state.global.userData);
   return (
     <main className="content p-5">
       <header className="header">
         <div>
-          <h5>Good morning 👋</h5>
-          <h2>Sheldon Cooper</h2>
+          <h5>{getGreeting()} 👋</h5>
+          <h2> {userData.firstName + " " + userData.lastName}</h2>
         </div>
         <i className="bi bi-bell"></i>
       </header>
