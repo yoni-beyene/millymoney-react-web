@@ -32,19 +32,24 @@ const VerificationPage = () => {
 
   const handleChange = (text, index) => {
     const newCode = [...code];
+
     if (text.length === 6) {
       const values = [...text.padEnd(6, "").slice(0, 6)];
       setCode(values);
       values.forEach((value, i) => {
-        if (inputs.current[i]) {
-          inputs.current[i].value = value;
-        }
+        if (inputs.current[i])
+          inputs.current[i].setNativeProps({ text: value });
       });
     } else {
-      newCode[index] = text[0];
+      newCode[index] = text[0] || "";
       setCode(newCode);
-      if (text && index < 5) {
-        inputs.current[index + 1]?.focus();
+
+      if (text) {
+        if (index < 5) {
+          inputs.current[index + 1]?.focus();
+        }
+      } else if (index > 0) {
+        inputs.current[index - 1]?.focus();
       }
     }
   };

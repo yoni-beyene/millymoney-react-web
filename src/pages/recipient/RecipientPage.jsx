@@ -1,43 +1,46 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RecipientList from "../../components/recipient/RecipientList";
 import Header from "../../components/shared/header/Header";
 import RecipientDetails from "../../components/recipient/RecipientDetails";
+import { useSelector, useDispatch } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import "./RecipientPage.scss";
+import HTTPService from "../../services/shared/HTTPService";
+import LoadingPage from "../../components/shared/loadingPage/LoadingPage";
+import PrimaryButton from "../../components/shared/primaryButton/PrimaryButton";
+import { useNavigate } from "react-router-dom";
+
 const RecipientPage = () => {
-  const recipients = [
-    {
-      name: "Tadiyos Belete",
-      number: "00087392265",
-      image:
-        "https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D",
-    },
-    {
-      name: "Tadiyos Belete",
-      number: "00087392265",
-      image:
-        "https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D",
-    },
-    {
-      name: "Tadiyos Belete",
-      number: "00087392265",
-      image:
-        "https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D",
-    },
-    {
-      name: "Tadiyos Belete",
-      number: "00087392265",
-      image:
-        "https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D",
-    },
-    {
-      name: "Tadiyos Belete",
-      number: "00087392265",
-      image:
-        "https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D",
-    },
-  ];
+  const navigate = useNavigate();
+
   const [selectedRecipient, setSelectedRecipient] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const senderId = useSelector((state) => state.global.senderId);
+  const [loading, setLoading] = useState(true);
+  const [recipients, setRecipients] = useState([]);
+  const [filteredRecipients, setFilteredRecipients] = useState([]);
+
+  useEffect(() => {
+    HTTPService.post(`/sender/recipient/get-recipient/${senderId}`)
+      .then((res) => {
+        setFilteredRecipients(res.data.recipients);
+        setRecipients(res.data.recipients);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const handleSearch = (query) => {
+    const filtered = recipients.filter(
+      (item) =>
+        item.firstName.toLowerCase().includes(query.toLowerCase()) ||
+        item.fatherName.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredRecipients(filtered);
+  };
 
   const handleRecipientClick = (recipient) => {
     setSelectedRecipient(recipient);
@@ -51,17 +54,56 @@ const RecipientPage = () => {
   return (
     <div className="home-container">
       <Header activeTab="recipient" />
-
-      {showModal ? (
-        <RecipientDetails
-          handleCloseModal={handleCloseModal}
-          selectedRecipient={selectedRecipient}
-        />
+      {loading ? (
+        <LoadingPage />
       ) : (
-        <RecipientList
-          recipients={recipients}
-          handleRecipientClick={handleRecipientClick}
-        />
+        <main className="content p-5">
+          {showModal ? (
+            <RecipientDetails
+              handleCloseModal={handleCloseModal}
+              selectedRecipient={selectedRecipient}
+            />
+          ) : (
+            <>
+              <section className="amount-section d-flex justify-content-between w-100">
+                <div
+                  className="amount-input-container"
+                  style={{ maxWidth: "400px" }}
+                >
+                  <input
+                    type="text"
+                    placeholder="Find Recipients"
+                    className="amount-input my-2"
+                    style={{ maxWidth: "400px" }}
+                    onChange={(search) => {
+                      handleSearch(search.target.value);
+                    }}
+                  />
+                  <div className="currency">
+                    <FontAwesomeIcon icon={faSearch} />
+                  </div>
+                </div>
+                <div style={{ width: "200px" }}>
+                  <PrimaryButton
+                    text="Add Recipient"
+                    onClick={() => navigate("/recipient/add-new")}
+                    isLoading={false}
+                  />
+                </div>
+              </section>
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <select className="form-select w-auto select-recipient-options">
+                  <option value="all">All Recipient</option>
+                  <option value="recent">Recently Added</option>
+                </select>
+              </div>{" "}
+              <RecipientList
+                recipients={filteredRecipients}
+                handleRecipientClick={handleRecipientClick}
+              />
+            </>
+          )}
+        </main>
       )}
     </div>
   );

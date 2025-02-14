@@ -14,6 +14,7 @@ import { sendMoneyAction } from "../../store/action/sendMoneyAction";
 
 const Home = ({ setHomeContent }) => {
   const amountInputRef = useRef(null);
+  const userData = useSelector((state) => state.global.sender);
 
   const [amount, setAmount] = useState("");
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ const Home = ({ setHomeContent }) => {
       return "Good Evening!";
     }
   };
-  const userData = useSelector((state) => state.global.userData);
+  console.log(userData);
   return (
     <main className="content p-5">
       <header className="header">

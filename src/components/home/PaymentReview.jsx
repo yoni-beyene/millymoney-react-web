@@ -12,7 +12,6 @@ const PaymentReview = ({ setHomeContent }) => {
   const sendMoneyHandler = () => {
     setIsLoading(true);
 
-    console.log(newRemitDetial);
     HTTPService.post("/remit/new-remit", newRemitDetial)
       .then((res) => {
         setIsLoading(false);

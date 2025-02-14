@@ -9,6 +9,7 @@ import CardsPage from "../pages/card/CardPages";
 import ProfilePage from "../pages/profile/ProfilePage";
 import EnterAmount from "../components/sendMoney/EnterAmount";
 import EnterRecipient from "../components/sendMoney/EnterRecipient";
+import AddRecientPage from "../pages/recipient/AddRecientPage";
 
 const RouteList = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const RouteList = createBrowserRouter([
       {
         path: "/recipient",
         element: <RecipientPage />,
+      },
+      {
+        path: "/recipient/add-new",
+        element: <AddRecientPage />,
       },
       {
         path: "/cards",
