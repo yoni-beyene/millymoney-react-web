@@ -1,6 +1,5 @@
 import PrimaryButton from "../shared/primaryButton/PrimaryButton";
 import Transaction from "./Transaction";
-import PropTypes from "prop-types";
 import {
   faArrowDown,
   faArrowUp,
@@ -11,25 +10,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { sendMoneyAction } from "../../store/action/sendMoneyAction";
+import { useNavigate } from "react-router-dom";
 
-const Home = ({ setHomeContent }) => {
-  const amountInputRef = useRef(null);
+const Home = () => {
+  const navigate = useNavigate();
+  const amountInputRef = useRef("");
   const userData = useSelector((state) => state.global.sender);
 
   const [amount, setAmount] = useState("");
   const dispatch = useDispatch();
 
   const sendMoneyHandler = () => {
-    if (amount === "" || amount === undefined) {
-      alert("Amount is required");
-      amountInputRef.current.focus();
-    } else {
-      dispatch({
-        type: sendMoneyAction.UPDATE_AMOUNT,
-        amount: amount,
-      });
-      setHomeContent("transferMoney");
-    }
+    dispatch({
+      type: sendMoneyAction.UPDATE_AMOUNT,
+      amount: amount,
+    });
+    navigate("/transfer-money");
   };
   const getGreeting = () => {
     const currentHour = new Date().getHours();
@@ -41,7 +37,6 @@ const Home = ({ setHomeContent }) => {
       return "Good Evening!";
     }
   };
-  console.log(userData);
   return (
     <main className="content p-5">
       <header className="header">
@@ -51,30 +46,32 @@ const Home = ({ setHomeContent }) => {
         </div>
         <i className="bi bi-bell"></i>
       </header>
-      <section className="amount-section">
-        <div className="amount-input-container">
-          <input
-            placeholder="Amount"
-            className="amount-input mt-3"
-            type="number"
-            onChange={(value) => setAmount(value.target.value)}
-            ref={amountInputRef}
-          />
-          <div className="currency">
-            <img src="https://flagcdn.com/us.svg" alt="USD" /> USD
+      <div className="row amount-section">
+        <div className="col-6">
+          <div className="amount-input-container">
+            <input
+              placeholder="Amount"
+              className="amount-input mt-3"
+              type="number"
+              onChange={(value) => setAmount(value.target.value)}
+              ref={amountInputRef}
+            />
+            <div className="currency">
+              <img src="https://flagcdn.com/us.svg" alt="USD" /> USD
+            </div>
           </div>
         </div>
-        <div style={{ width: "700px" }}>
-          <span style={{ borderRadius: "60px", height: 56 }}>
+        <div className="col-6">
+          <div style={{ borderRadius: "60px" }}>
             <PrimaryButton
               text="Send Money"
               onClick={() => sendMoneyHandler()}
               isLoading={false}
               borderRadius={40}
             />
-          </span>
+          </div>
         </div>
-      </section>
+      </div>
       <section className="actions-section">
         <h5>Suggestion Actions</h5>
         <div className="actions">
@@ -107,7 +104,5 @@ const Home = ({ setHomeContent }) => {
     </main>
   );
 };
-Home.propTypes = {
-  setHomeContent: PropTypes.func.isRequired,
-};
+
 export default Home;

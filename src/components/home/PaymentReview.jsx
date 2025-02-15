@@ -1,21 +1,21 @@
 import PrimaryButton from "../shared/primaryButton/PrimaryButton";
-import { useEffect, useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import HTTPService from "../../services/shared/HTTPService";
 import LoadingPage from "../shared/loadingPage/LoadingPage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faBell } from "@fortawesome/free-solid-svg-icons";
-const PaymentReview = ({ setHomeContent }) => {
+import numberWithCommas from "../../services/shared/numberWithCommas";
+import { useNavigate } from "react-router-dom";
+const PaymentReview = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [remitId, setRemitId] = useState("");
   const newRemitDetial = useSelector((state) => state.sendeMoney);
   const sendMoneyHandler = () => {
     setIsLoading(true);
-
     HTTPService.post("/remit/new-remit", newRemitDetial)
       .then((res) => {
         setIsLoading(false);
-        setRemitId(res.data.newRemit.remitId);
         window.location.href =
           "https://hostedmicroform.ecopiavaluechain.com/microform?reference=" +
           res.data.newRemit.remitId +
@@ -34,7 +34,7 @@ const PaymentReview = ({ setHomeContent }) => {
           <div className="header">
             <FontAwesomeIcon
               icon={faArrowLeft}
-              onClick={() => setHomeContent("default")}
+              onClick={() => navigate(-1)}
               className="back-icon"
             />
             <div>
@@ -44,9 +44,10 @@ const PaymentReview = ({ setHomeContent }) => {
           </div>
 
           <div>
-            <p className="text-center text-muted">YOU'RE SENDING</p>
+            <p className="text-center text-muted">YOU ARE SENDING</p>
             <h3 className="text-center text-primary">
-              {newRemitDetial.toCurrency} {newRemitDetial.exchangeAmount}
+              {newRemitDetial.toCurrency}{" "}
+              {numberWithCommas(newRemitDetial.exchangeAmount)}
             </h3>
             <p className="text-center fw-bold">TO</p>
             <h4 className="text-center fw-bold">
@@ -123,5 +124,4 @@ const PaymentReview = ({ setHomeContent }) => {
     </>
   );
 };
-
 export default PaymentReview;

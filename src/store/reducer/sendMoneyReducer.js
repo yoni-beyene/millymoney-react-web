@@ -12,7 +12,6 @@ const initialState = {
   exchangeRate: "",
   exchangeAmount: "",
   appliedFee: "",
-  homeContent: "default",
 };
 
 const sendMoneyReducer = (state = initialState, action) => {
@@ -27,11 +26,7 @@ const sendMoneyReducer = (state = initialState, action) => {
         ...state,
         ...action.payload,
       };
-    case sendMoneyAction.UPDATE_HOME_PAGE_CONTENT:
-      return {
-        ...state,
-        homeContent: action.value,
-      };
+
     default:
       return state;
   }

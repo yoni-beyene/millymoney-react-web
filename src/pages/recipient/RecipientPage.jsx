@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import RecipientList from "../../components/recipient/RecipientList";
 import Header from "../../components/shared/header/Header";
 import RecipientDetails from "../../components/recipient/RecipientDetails";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import "./RecipientPage.scss";
@@ -17,21 +17,25 @@ const RecipientPage = () => {
   const [selectedRecipient, setSelectedRecipient] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const senderId = useSelector((state) => state.global.senderId);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [recipients, setRecipients] = useState([]);
   const [filteredRecipients, setFilteredRecipients] = useState([]);
 
   useEffect(() => {
+    readAllRecipient();
+  }, []);
+
+  const readAllRecipient = () => {
     HTTPService.post(`/sender/recipient/get-recipient/${senderId}`)
       .then((res) => {
         setFilteredRecipients(res.data.recipients);
         setRecipients(res.data.recipients);
-        setLoading(false);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  };
 
   const handleSearch = (query) => {
     const filtered = recipients.filter(
@@ -54,57 +58,57 @@ const RecipientPage = () => {
   return (
     <div className="home-container">
       <Header activeTab="recipient" />
-      {loading ? (
-        <LoadingPage />
-      ) : (
-        <main className="content p-5">
-          {showModal ? (
-            <RecipientDetails
-              handleCloseModal={handleCloseModal}
-              selectedRecipient={selectedRecipient}
-            />
-          ) : (
-            <>
-              <section className="amount-section d-flex justify-content-between w-100">
-                <div
-                  className="amount-input-container"
+      <main className="content p-5">
+        {showModal ? (
+          <RecipientDetails
+            handleCloseModal={handleCloseModal}
+            selectedRecipient={selectedRecipient}
+          />
+        ) : (
+          <>
+            <section className="amount-section d-flex justify-content-between w-100">
+              <div
+                className="amount-input-container"
+                style={{ maxWidth: "400px" }}
+              >
+                <input
+                  type="text"
+                  placeholder="Find Recipients"
+                  className="amount-input my-2"
                   style={{ maxWidth: "400px" }}
-                >
-                  <input
-                    type="text"
-                    placeholder="Find Recipients"
-                    className="amount-input my-2"
-                    style={{ maxWidth: "400px" }}
-                    onChange={(search) => {
-                      handleSearch(search.target.value);
-                    }}
-                  />
-                  <div className="currency">
-                    <FontAwesomeIcon icon={faSearch} />
-                  </div>
+                  onChange={(search) => {
+                    handleSearch(search.target.value);
+                  }}
+                />
+                <div className="currency">
+                  <FontAwesomeIcon icon={faSearch} />
                 </div>
-                <div style={{ width: "200px" }}>
-                  <PrimaryButton
-                    text="Add Recipient"
-                    onClick={() => navigate("/recipient/add-new")}
-                    isLoading={false}
-                  />
-                </div>
-              </section>
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <select className="form-select w-auto select-recipient-options">
-                  <option value="all">All Recipient</option>
-                  <option value="recent">Recently Added</option>
-                </select>
-              </div>{" "}
+              </div>
+              <div style={{ width: "200px" }}>
+                <PrimaryButton
+                  text="Add Recipient"
+                  onClick={() => navigate("/recipient/add-new")}
+                  isLoading={false}
+                />
+              </div>
+            </section>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <select className="form-select w-auto select-recipient-options">
+                <option value="all">All Recipient</option>
+                <option value="recent">Recently Added</option>
+              </select>
+            </div>{" "}
+            {isLoading ? (
+              <LoadingPage />
+            ) : (
               <RecipientList
                 recipients={filteredRecipients}
                 handleRecipientClick={handleRecipientClick}
               />
-            </>
-          )}
-        </main>
-      )}
+            )}
+          </>
+        )}
+      </main>
     </div>
   );
 };

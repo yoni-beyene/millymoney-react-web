@@ -1,14 +1,14 @@
-import Home from "../../components/home/Home";
 import Header from "../../components/shared/header/Header";
 import "./HomePage.scss";
+import TransferMoney from "../../components/home/TransferMoney";
 
-const HomePage = () => {
+const TransferMoneyPage = () => {
   return (
     <div className="home-container">
       <Header activeTab="home" />
-      <Home />
+      <TransferMoney />
     </div>
   );
 };
 
-export default HomePage;
+export default TransferMoneyPage;

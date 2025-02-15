@@ -10,9 +10,14 @@ import ProfilePage from "../pages/profile/ProfilePage";
 import EnterAmount from "../components/sendMoney/EnterAmount";
 import EnterRecipient from "../components/sendMoney/EnterRecipient";
 import AddRecientPage from "../pages/recipient/AddRecientPage";
+import TransferMoneyPage from "../pages/home/TransferMoneyPage";
+import PaymentReviewPage from "../pages/home/PaymentReviewPage";
+import Layout from "./Layout";
+import ErrorBoundary from "../components/shared/exception/ErrorBoundary";
 
 const RouteList = createBrowserRouter([
   {
+    element: <Layout />,
     children: [
       {
         path: "/",
@@ -34,6 +39,15 @@ const RouteList = createBrowserRouter([
         path: "/home",
         element: <HomePage />,
       },
+      {
+        path: "/transfer-money",
+        element: <TransferMoneyPage />,
+      },
+      {
+        path: "/payment-review",
+        element: <PaymentReviewPage />,
+      },
+
       {
         path: "/statistics",
         element: <StatisticsPage />,
@@ -63,14 +77,11 @@ const RouteList = createBrowserRouter([
         element: <EnterRecipient />,
       },
     ],
-    // errorElement: (
-    //   <div
-    //     className="d-flex flex-column justify-content-between"
-    //     style={{ height: "100vh" }}
-    //   >
-    //     <h1>ERROR happend</h1>
-    //   </div>
-    // ),
+    errorElement: (
+      <div className="d-flex flex-column justify-content-between mt-5">
+        <ErrorBoundary />
+      </div>
+    ),
   },
 ]);
 

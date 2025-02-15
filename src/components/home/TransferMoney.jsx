@@ -1,8 +1,7 @@
-import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faBell } from "@fortawesome/free-solid-svg-icons";
 import PrimaryButton from "../shared/primaryButton/PrimaryButton";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./home.scss";
 import { useEffect, useState, useRef } from "react";
@@ -10,17 +9,25 @@ import { useDispatch, useSelector } from "react-redux";
 import HTTPService from "../../services/shared/HTTPService";
 import LoadingPage from "../shared/loadingPage/LoadingPage";
 import { sendMoneyAction } from "../../store/action/sendMoneyAction";
-const TransferMoney = ({ setHomeContent }) => {
+import { useLocation, useNavigate } from "react-router-dom";
+const TransferMoney = () => {
+  const navigate = useNavigate();
+  const useQuery = () => new URLSearchParams(useLocation().search);
+  const query = useQuery();
+  const recipientId = query.get("recipient-id");
   const formikRef = useRef();
-
   const validationSchema = Yup.object({
-    transferTo: Yup.string().optional(),
-    bankName: Yup.number().required("Required"),
+    amount: Yup.number()
+      .required("Amount required")
+      .min(10, "Amount must be at least 10")
+      .max(3000, "Amount must be less than 3000"),
+    transferTo: Yup.string(),
+    bankId: Yup.number().required("Please select the bank"),
     accountNumber: Yup.string()
       .matches(/^[0-9]+$/, "Must be a number")
-      .required("Required"),
-    recipientName: Yup.string().required("Required"),
-    reference: Yup.string().optional(),
+      .required("Account number is required"),
+    recipientName: Yup.string().required("Plase verify the account number"),
+    reference: Yup.string(),
   });
   const amount = useSelector((state) => state.sendeMoney.amount);
   const senderId = useSelector((state) => state.global.senderId);
@@ -29,6 +36,34 @@ const TransferMoney = ({ setHomeContent }) => {
   const [selectedBank, setSelectedBank] = useState(null);
   const [banks, setBanks] = useState([]);
   const [recipient, setRecipient] = useState();
+  const [recipientList, setRecipientList] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    readAllBanks();
+  }, []);
+
+  const readAllBanks = () => {
+    HTTPService.post("/bank/all-banks-with-exchange")
+      .then((res) => {
+        setBanks(res.data.banks);
+        readAllRecipient();
+      })
+      .catch((err) => {
+        alert(err.response.data.err);
+      });
+  };
+
+  const readAllRecipient = () => {
+    HTTPService.post(`/sender/recipient/get-recipient/${senderId}`)
+      .then((res) => {
+        setIsLoading(false);
+        setRecipientList(res.data.recipients);
+      })
+      .catch((err) => {
+        alert(err.response.data.err);
+      });
+  };
 
   const fetchNameFromAPI = (accountNumber) => {
     if (accountNumber === "" || selectedBank === null) {
@@ -57,19 +92,52 @@ const TransferMoney = ({ setHomeContent }) => {
         });
     }
   };
-
-  useEffect(() => {
-    HTTPService.post("/bank/all-banks-with-exchange")
-      .then((res) => {
-        setIsLoading(false);
-        setBanks(res.data.banks);
-      })
-      .catch((err) => {
-        alert(err.response.data.err);
-      });
-  }, []);
-  const [isOpen, setIsOpen] = useState(false);
-
+  const selectTransferHandler = (recipientId) => {
+    if (recipientList.length === 0 || banks.length === 0) {
+      return;
+    } else {
+      const recipientTemp = recipientList.filter(
+        (r) => r.recipientId === recipientId
+      )[0];
+      if (recipientTemp) {
+        formikRef.current.setFieldValue(
+          "transferTo",
+          recipientTemp.recipientId
+        );
+        setSelectedBank(
+          banks.filter((b) => b.bankId === recipientTemp.bankId)[0]
+        );
+        formikRef.current.setFieldValue("bankId", recipientTemp.bankId);
+        formikRef.current.setFieldValue(
+          "accountNumber",
+          recipientTemp.accountNumber
+        );
+        setIsLoading(true);
+        HTTPService.post(
+          "/bank/bank-customer/" +
+            recipientTemp.bankId +
+            "/" +
+            recipientTemp.accountNumber
+        )
+          .then((res) => {
+            formikRef.current.setFieldValue(
+              "recipientName",
+              res.data.customer.firstName +
+                " " +
+                res.data.customer.middleName +
+                " " +
+                res.data.customer.lastName
+            );
+            setRecipient(res.data.customer);
+            setIsLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setIsLoading(false);
+          });
+      }
+    }
+  };
   const onSubmitForm = (values) => {
     dispatch({
       type: sendMoneyAction.UPDATE_NEW_REMIT_FIELDS,
@@ -86,14 +154,24 @@ const TransferMoney = ({ setHomeContent }) => {
         accountHolderMiddle: recipient?.middleName,
         accountHolderLastName: recipient?.lastName,
         exchangeAmount:
-          parseFloat(amount) * parseFloat(selectedBank.ExchangeRates[0].rate),
+          parseFloat(values.amount) *
+          parseFloat(selectedBank.ExchangeRates[0].rate),
         reason: values?.reference,
         appliedFee: "0",
       },
     });
-    setHomeContent("paymentReview");
+    dispatch({
+      type: sendMoneyAction.UPDATE_AMOUNT,
+      amount: values.amount,
+    });
+    navigate("/payment-review");
   };
 
+  useEffect(() => {
+    if (recipientId && recipientList.length !== 0) {
+      selectTransferHandler(recipientId);
+    }
+  }, [recipientList]);
   return (
     <>
       {isLoading && <LoadingPage />}
@@ -102,7 +180,7 @@ const TransferMoney = ({ setHomeContent }) => {
           <div className="header">
             <FontAwesomeIcon
               icon={faArrowLeft}
-              onClick={() => setHomeContent("default")}
+              onClick={() => navigate(-1)}
               className="back-icon"
             />
             <h2>Transfer Money</h2>
@@ -111,8 +189,9 @@ const TransferMoney = ({ setHomeContent }) => {
           <Formik
             innerRef={formikRef}
             initialValues={{
+              amount: amount,
               transferTo: "",
-              bankName: "",
+              bankId: "",
               accountNumber: "",
               recipientName: "",
               reference: "",
@@ -121,22 +200,25 @@ const TransferMoney = ({ setHomeContent }) => {
             onSubmit={(values) => onSubmitForm(values)}
           >
             {({ values, handleSubmit, setFieldValue }) => (
-              <Form onSubmit={handleSubmit}>
+              <div>
                 <div className="row mb-3">
                   <div className="col-md-6">
                     <label
                       className="form-label money-transfer-input-label"
-                      htmlFor="transfer-to"
+                      htmlFor="amount"
                     >
                       Amount
                     </label>
-                    <input
+
+                    <Field
+                      type="number"
+                      name="amount"
                       className="form-control money-transfer-input"
-                      readOnly
-                      value={amount}
+                      placeholder="Enter amount"
+                      id="amount"
                     />
                     <ErrorMessage
-                      name="transferTo"
+                      name="amount"
                       component="div"
                       className="text-danger"
                     />
@@ -153,8 +235,21 @@ const TransferMoney = ({ setHomeContent }) => {
                       name="transferTo"
                       className="form-select money-transfer-input"
                       id="transfer-to"
+                      onChange={(e) => {
+                        selectTransferHandler(e.target.value);
+                      }}
                     >
-                      <option value="">Select Transfer Type</option>{" "}
+                      <option value="" disabled>
+                        Select Transfer Type
+                      </option>
+                      {recipientList.map((recipient) => (
+                        <option
+                          key={recipient.recipientId}
+                          value={recipient.recipientId}
+                        >
+                          {recipient.firstName} ({recipient.accountNumber})
+                        </option>
+                      ))}
                     </Field>
                     <ErrorMessage
                       name="transferTo"
@@ -197,10 +292,10 @@ const TransferMoney = ({ setHomeContent }) => {
                           <div className="dropdown-list">
                             {banks.map((bank) => (
                               <div
-                                key={bank.id}
+                                key={bank.bankId}
                                 className="dropdown-item"
                                 onClick={() => {
-                                  setFieldValue("bankName", bank.id);
+                                  setFieldValue("bankId", bank.bankId);
                                   setSelectedBank(bank);
                                   setIsOpen(false);
                                 }}
@@ -222,7 +317,7 @@ const TransferMoney = ({ setHomeContent }) => {
                     </div>
 
                     <ErrorMessage
-                      name="bankName"
+                      name="bankId"
                       component="div"
                       className="text-danger"
                     />
@@ -236,7 +331,7 @@ const TransferMoney = ({ setHomeContent }) => {
                     </label>
                     <div className="d-flex w-100 justify-content-between">
                       <Field
-                        type="text"
+                        type="type"
                         name="accountNumber"
                         className="form-control money-transfer-input"
                         placeholder="Account Number"
@@ -302,12 +397,14 @@ const TransferMoney = ({ setHomeContent }) => {
                   <div style={{ width: "400px" }}>
                     <PrimaryButton
                       text="Send Money"
-                      onClick={() => onSubmitForm(values)}
+                      onClick={() => {
+                        handleSubmit();
+                      }}
                       isLoading={false}
                     />
                   </div>
                 </div>
-              </Form>
+              </div>
             )}
           </Formik>
         </div>
@@ -315,7 +412,5 @@ const TransferMoney = ({ setHomeContent }) => {
     </>
   );
 };
-TransferMoney.propTypes = {
-  setHomeContent: PropTypes.func.isRequired,
-};
+
 export default TransferMoney;

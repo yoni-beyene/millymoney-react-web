@@ -34,10 +34,4 @@ PrimaryButton.propTypes = {
   disabled: PropTypes.bool,
   borderRadius: PropTypes.number,
 };
-
-PrimaryButton.defaultProps = {
-  isLoading: false,
-  disabled: false,
-};
-
 export default PrimaryButton;

@@ -28,19 +28,14 @@ const RecipientDetails = ({ selectedRecipient, handleCloseModal }) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   useEffect(() => {
-    const url = "/bank/bank-by-id/" + selectedRecipient.bankId;
-    HTTPService.get(url)
-      .then((res) => {
-        setBank(res.data.bank);
-      })
-      .catch((err) => {
-        alert(err.data);
-      });
+    readAllBank();
+    readAllRecipient();
   }, []);
 
-  useEffect(() => {
-    const url = `/remit/remits-to-recipient/${senderId}/${selectedRecipient.recipientId}`;
-    HTTPService.post(url)
+  const readAllRecipient = () => {
+    HTTPService.post(
+      `/remit/remits-to-recipient/${senderId}/${selectedRecipient.recipientId}`
+    )
       .then((res) => {
         setTransfers(res.data.remits);
         setLoadingRecipients(false);
@@ -49,7 +44,16 @@ const RecipientDetails = ({ selectedRecipient, handleCloseModal }) => {
         setLoadingRecipients(false);
         alert(err);
       });
-  }, []);
+  };
+  const readAllBank = () => {
+    HTTPService.get("/bank/bank-by-id/" + selectedRecipient.bankId)
+      .then((res) => {
+        setBank(res.data.bank);
+      })
+      .catch((err) => {
+        alert(err.data);
+      });
+  };
 
   const removeRecipient = () => {
     setIsLoading(true);
@@ -89,7 +93,14 @@ const RecipientDetails = ({ selectedRecipient, handleCloseModal }) => {
 
         <div className="action-buttons">
           <div className="mx-2 d-flex flex-column align-items-center">
-            <button className="action send btn-outline">
+            <button
+              className="action send btn-outline"
+              onClick={() =>
+                navigate(
+                  `/transfer-money?recipient-id=${selectedRecipient.recipientId}`
+                )
+              }
+            >
               <span style={{ rotate: "-90deg" }}>
                 <FontAwesomeIcon icon={faRightFromBracket} />
               </span>
