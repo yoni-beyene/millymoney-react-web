@@ -38,7 +38,7 @@ const Transaction = () => {
           <div className="transactions">
             {transfers.map((transfer, index) => (
               <div className="transaction-item" key={index + 1}>
-                <div className="d-flex align-item-center">
+                <div className="d-flex align-items-center">
                   <div className="transaction-item-icon">
                     <span
                       className="me-3 "

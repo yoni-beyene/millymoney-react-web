@@ -18,7 +18,7 @@ const styles = {
     width: "60px",
     height: "60px",
     border: "6px solid #f3f3f3",
-    borderTop: "6px solid green",
+    borderTop: "6px solid #7648e0",
     borderRadius: "50%",
     animation: "spin 1s linear infinite",
   },

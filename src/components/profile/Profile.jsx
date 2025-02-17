@@ -43,8 +43,10 @@ const Profile = () => {
         console.log(res);
         if (values.image) {
           const formDataWithImage = new FormData();
-          formDataWithImage.append("image", values.image);
-          uploadImage(formData);
+
+          formDataWithImage.append("profile", values.image);
+
+          uploadImage(formDataWithImage);
         } else {
           setIsLoading(false);
         }
@@ -54,8 +56,11 @@ const Profile = () => {
         console.log(err);
       });
   };
-  const uploadImage = (formData) => {
-    HTTPService.post(`/add_profile/${userData.senderId}`, formData)
+  const uploadImage = (formDataWithImage) => {
+    HTTPService.fileUpload(
+      `/sender/add_profile/${userData.senderId}`,
+      formDataWithImage
+    )
       .then((res) => {
         console.log(res);
         setIsLoading(false);

@@ -1,5 +1,5 @@
 .sidebar {
-  min-width: 250px;
+  min-width: 35%;
   background-color: #1a1a2e;
   color: #fff;
   display: flex;
@@ -10,13 +10,14 @@
   .menu {
     list-style: none;
     padding: 0;
+    margin-top: 150px;
 
     .menu-item {
       display: flex;
       align-items: center;
       padding: 10px 15px;
-      font-size: 16px;
-      margin-bottom: 10px;
+      font-size: 25px;
+      margin-bottom: 30px;
       cursor: pointer;
       transition: background 0.3s;
 
@@ -35,7 +36,7 @@
   .logout {
     display: flex;
     align-items: center;
-    font-size: 16px;
+    font-size: 25px;
     color: red;
     cursor: pointer;
 
