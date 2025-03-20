@@ -50,7 +50,7 @@
   #loading-content:before {
     content: "";
     position: absolute;
-    border: 3px solid #895cfe;
+    border: 3px solid #924ffa;
     left: 5px;
     right: 5px;
     top: 5px;
@@ -59,8 +59,8 @@
 
   #loading-content {
     border: 3px solid transparent;
-    border-top-color: #895cfe;
-    border-bottom-color: #895cfe;
+    border-top-color: #924ffa;
+    border-bottom-color: #924ffa;
     border-radius: 50%;
     -webkit-animation: loader 2s linear infinite;
     -moz-animation: loader 2s linear infinite;
@@ -81,8 +81,8 @@
 
   #loading-content:after {
     border: 3px solid transparent;
-    border-top-color: #895cfe;
-    border-bottom-color: #895cfe;
+    border-top-color: #924ffa;
+    border-bottom-color: #924ffa;
     border-radius: 50%;
     -webkit-animation: loader 1.5s linear infinite;
     animation: loader 1.5s linear infinite;

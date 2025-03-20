@@ -2,22 +2,81 @@ import { Bar } from "react-chartjs-2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
   Chart as ChartJS,
-  BarElement,
   CategoryScale,
   LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
 } from "chart.js";
-import { useState } from "react";
 
-ChartJS.register(BarElement, CategoryScale, LinearScale);
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import HTTPService from "../../services/shared/HTTPService";
+import LoadingPage from "../shared/loadingPage/LoadingPage";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  ChartDataLabels
+);
 
 const StatisticsChart = () => {
-  const [activeBtn, setActiveBtn] = useState("received");
+  const senderId = useSelector((state) => state.global.senderId);
+
+  const [totalSent, setTotalSent] = useState(0);
+  const [monethsLabel, setMonethsLabel] = useState([]);
+  const [monethsValue, setMonethsvalue] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    HTTPService.post("/remit/transaction/five-month-stats/" + senderId)
+      .then((res) => {
+        setIsLoading(false);
+        getMonth(5, res.data);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        alert(err.response.data.err);
+      });
+  }, []);
+
+  const getMonth = (count = 5, apiResponse) => {
+    const months = [];
+    const currentDate = new Date();
+    const monthlyTotals = apiResponse.monthlyTotals || {}; // Extract API data
+    let totalTemp = 0;
+    for (let i = count - 1; i >= 0; i--) {
+      const date = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() - i,
+        1
+      );
+      const monthName = date.toLocaleString("default", { month: "long" });
+      const monthAbbr = date.toLocaleString("default", { month: "long" });
+
+      months.push({
+        month: monthAbbr,
+        monthName: monthName,
+        value: monthlyTotals[monthName] ?? null,
+      });
+      totalTemp += parseFloat(monthlyTotals[monthName] ?? 0);
+    }
+
+    setTotalSent(totalTemp);
+
+    setMonethsLabel(months.map((item) => item.month));
+    setMonethsvalue(months.map((item) => item.value));
+  };
   const barData = {
-    labels: ["M", "T", "W", "Th", "F", "S"],
+    labels: monethsLabel,
     datasets: [
       {
-        label: "Spending",
-        data: [200, 100, 300, 250, 150, 50],
+        label: "Sent",
+        data: monethsValue,
         backgroundColor: "rgba(123, 97, 255, 0.6)",
         borderRadius: 5,
       },
@@ -28,66 +87,44 @@ const StatisticsChart = () => {
     responsive: true,
     plugins: {
       legend: { display: false },
+      datalabels: {
+        anchor: "end",
+        align: "top",
+        formatter: (value) => value,
+        font: {
+          weight: "bold",
+          size: 12,
+        },
+        color: "#000",
+      },
     },
     scales: {
       y: {
         beginAtZero: true,
-        ticks: { stepSize: 100 },
       },
     },
   };
 
   return (
     <main className="content p-5">
-      <header className="header">
-        <div>
-          <h1 className="mb-3">Recipient</h1>
-          <h3 className="fw-bold my-3">Total Sent</h3>
-          <h1 className="fw-bold my-3">ETB 1360</h1>
-          <div className="d-flex justify-content-start my-4">
-            <button
-              className={`btn btn-link  me-3 ${
-                activeBtn === "received"
-                  ? "text-primary fw-bold"
-                  : "text-secondary"
-              }`}
-              onClick={() => setActiveBtn("received")}
-            >
-              Received
-            </button>
-            <button
-              className={`btn btn-link  me-3 ${
-                activeBtn === "sent" ? "text-primary fw-bold" : "text-secondary"
-              }`}
-              onClick={() => setActiveBtn("sent")}
-            >
-              Sent
-            </button>
-          </div>
-        </div>
-      </header>
-      <div className="d-flex align-items-center">
-        <h6 className="fw-bold text-primary">Spending Activity</h6>
-        <select className="form-select w-auto mx-3">
-          <option value="this-week">This Week</option>
-          <option value="last-week">Last Week</option>
-        </select>
-      </div>
+      <div>
+        <header className="header">
+          <h1 className="mb-3">Statistics</h1>
+        </header>
+        {isLoading ? (
+          <LoadingPage />
+        ) : (
+          <div className="">
+            <h2 className="fw-bold my-3">Total Sent</h2>
+            <h3 className="fw-bold my-3">USD {totalSent}</h3>
 
-      <div className="row">
-        <div className="col-6">
-          <Bar data={barData} options={barOptions} />
-        </div>
-        <div className="col-6">
-          <div className="mx-5">
-            <h1>ETB 5780.32</h1>
-            <h5>Average weekly spend</h5>
-            <div className="my-5">
-              <h1>ETB 1970.57</h1>
-              <h5>Spend this week</h5>
+            <div className="row">
+              <div className="col-12">
+                <Bar data={barData} options={barOptions} />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </main>
   );

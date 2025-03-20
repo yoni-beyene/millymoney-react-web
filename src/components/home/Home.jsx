@@ -40,7 +40,7 @@ const Home = () => {
   };
   return (
     <main className="content">
-      <div className="container">
+      <div className="">
         <header className="header">
           <div>
             <h4 className="my-3">{getGreeting()} 👋</h4>
@@ -49,7 +49,10 @@ const Home = () => {
           <i className="bi bi-bell"></i>
         </header>
         <div className="row amount-section">
-          <div className="col-6">
+          <div className="col-6 my-2">
+            <label htmlFor="amount-home" className="amount-label mb-2">
+              Amount
+            </label>
             <div className="amount-input-container">
               <input
                 placeholder="Amount"
@@ -57,6 +60,7 @@ const Home = () => {
                 type="number"
                 onChange={(value) => setAmount(value.target.value)}
                 ref={amountInputRef}
+                id="amount-home"
               />
               <div className="currency">
                 <Flag code="US" height="35" width={35} />
@@ -64,8 +68,8 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col-6">
-            <div style={{ borderRadius: "60px" }}>
+          <div className="col-6 my-2">
+            <div style={{ borderRadius: "60px", height: "80px" }}>
               <PrimaryButton
                 text="Send Money"
                 onClick={() => sendMoneyHandler()}

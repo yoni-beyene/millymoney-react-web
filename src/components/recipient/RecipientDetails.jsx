@@ -1,9 +1,7 @@
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faArrowLeft,
   faArrowUp,
-  faBell,
   faRemove,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
@@ -16,7 +14,7 @@ import LoadingComponent from "../shared/loadingPage/LoadingComponent";
 import LoadingPage from "../shared/loadingPage/LoadingPage";
 import { useNavigate } from "react-router-dom";
 
-const RecipientDetails = ({ selectedRecipient, handleCloseModal }) => {
+const RecipientDetails = ({ selectedRecipient }) => {
   const navigate = useNavigate();
   const senderId = useSelector((state) => state.global.senderId);
   const [loading, setIsLoading] = useState(false);
@@ -74,17 +72,7 @@ const RecipientDetails = ({ selectedRecipient, handleCloseModal }) => {
     <main className="content p-5">
       {loading && <LoadingPage />}
 
-      <div className="recipient-container card p-5">
-        <div className="header">
-          <FontAwesomeIcon
-            icon={faArrowLeft}
-            onClick={() => handleCloseModal()}
-            className="back-icon"
-          />
-          <h2>Recipient</h2>
-          <FontAwesomeIcon icon={faBell} />
-        </div>
-
+      <div className="recipient-container p-5">
         <div className="profile-section">
           <img src={user} alt="Recipient" className="profile-image" />
           <h3>{selectedRecipient.firstName}</h3>
@@ -224,6 +212,5 @@ const RecipientDetails = ({ selectedRecipient, handleCloseModal }) => {
 
 RecipientDetails.propTypes = {
   selectedRecipient: PropTypes.object.isrequeired,
-  handleCloseModal: PropTypes.func.isrequeired,
 };
 export default RecipientDetails;

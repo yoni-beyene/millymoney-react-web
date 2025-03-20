@@ -103,21 +103,18 @@
     }
 
     .transactions-section {
-      overflow-y: hidden;
-      max-height: 450px;
       .transactions {
         .transaction-item {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 15px 20px;
           border-radius: 8px;
           margin-bottom: 20px;
           .transaction-item-icon {
             font-size: 24px;
             background: #f0f0f0;
-            height: 60px;
-            width: 60px;
+            height: 70px;
+            width: 70px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -127,19 +124,9 @@
 
           .amount {
             font-weight: 600;
+            font-size: 30px;
+            width: 133px;
           }
-        }
-      }
-
-      .view-all {
-        display: block;
-        text-align: right;
-        color: #662d91;
-        text-decoration: none;
-        margin-top: 10px;
-
-        &:hover {
-          text-decoration: underline;
         }
       }
     }

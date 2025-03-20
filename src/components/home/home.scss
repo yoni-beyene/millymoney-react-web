@@ -55,11 +55,50 @@
 }
 .primary-outline-btn {
   padding: 14px 10px;
-  border: 1px solid #895cfe !important;
+  border: 1px solid #924ffa !important;
   border: none;
-  color: #895cfe;
+  color: #924ffa;
   font-size: 16px;
   text-align: center;
   width: 100%;
   background-color: transparent;
+}
+.home-page-transaction-title {
+  font-size: 20px;
+  font-weight: "bold";
+  display: block;
+  text-align: right;
+}
+.view-all {
+  color: #662d91;
+  text-decoration: none;
+  margin-top: 10px;
+  width: 133px;
+  text-align: left !important;
+  display: flex;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+.transaction-texts {
+  font-size: 22px;
+  .transaction-texts-date-time {
+    font-size: 18px;
+  }
+}
+.amount-label {
+  font-size: 20px;
+  font-weight: 600;
+  margin-left: 5px;
+}
+.card {
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important  ;
+  border-radius: 8px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
 }

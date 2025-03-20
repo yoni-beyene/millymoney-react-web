@@ -15,7 +15,7 @@ const Transaction = () => {
     HTTPService.post("/remit/sender-remits/" + senderId)
       .then((res) => {
         setIsLoading(false);
-        setTransfers(res.data.remits);
+        setTransfers(res.data.remits.slice(0, 4));
       })
       .catch((err) => {
         setIsLoading(false);
@@ -24,20 +24,20 @@ const Transaction = () => {
   }, [senderId]);
 
   return (
-    <section className="transactions-section">
+    <section className="transactions-section ">
       {isLoading ? (
         <LoadingComponent />
       ) : (
-        <>
-          <div className="d-flex justify-content-between my-3">
-            <h5>Transaction</h5>
-            <a href="/" className="view-all">
+        <div className="recipient-container card p-5">
+          <div className="d-flex justify-content-between mt-3 mb-1 ">
+            <h5 className="home-page-transaction-title">Transaction</h5>
+            <a href="#" className="view-all home-page-transaction-title">
               View All
             </a>
           </div>
-          <div className="transactions">
+          <div className="transactions mb-3">
             {transfers.map((transfer, index) => (
-              <div className="transaction-item" key={index + 1}>
+              <div className="transaction-item my-3" key={index + 1}>
                 <div className="d-flex align-items-center">
                   <div className="transaction-item-icon">
                     <span
@@ -53,18 +53,22 @@ const Transaction = () => {
                     </span>
                   </div>
 
-                  <div>
+                  <div className="transaction-texts">
                     Transfer to {transfer.accountHolderFirstName}{" "}
                     {transfer.accountHolderLastName}
-                    <span> {formatDateTime(transfer.createdAt)}</span>
+                    <br />
+                    <span className="transaction-texts-date-time">
+                      {" "}
+                      {formatDateTime(transfer.createdAt)}
+                    </span>
                   </div>
                 </div>
 
-                <p className="amount">{transfer.amount}</p>
+                <p className="amount text-left ">${transfer.amount}</p>
               </div>
             ))}
           </div>
-        </>
+        </div>
       )}
     </section>
   );

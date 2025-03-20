@@ -14,7 +14,8 @@ import PropTypes from "prop-types";
 import HTTPService from "../../services/shared/HTTPService";
 import { useSelector } from "react-redux";
 import LoadingPage from "../shared/loadingPage/LoadingPage";
-
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from "react-responsive-carousel";
 const Cards = () => {
   const [cardList, setCardList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -74,16 +75,21 @@ const Cards = () => {
             className="cards-carousel w-100 d-flex justify-content-center"
             onScroll={handleScroll}
           >
-            {cardList.map((card) => (
-              <div
-                key={card.cardId}
-                className="img-fluid custom-card d-flex justify-content-end align-items-start p-3 flex-column"
-              >
-                <p> {card.cardPrefix}XXXXXXXXXX</p>
-                <p> {card.expiry}XXXXX</p>
-              </div>
-            ))}
+            {" "}
+            <Carousel>
+              {cardList.map((card) => (
+                <div
+                  key={card.cardId}
+                  className="img-fluid custom-card d-flex justify-content-end align-items-start p-3 flex-column"
+                  style={{ width: "200px", height: "200px" }}
+                >
+                  <p> {card.cardPrefix}XXXXXXXXXX</p>
+                  <p> {card.expiry}XXXXX</p>
+                </div>
+              ))}
+            </Carousel>
           </div>
+
           <div className="card-carousel-indicators">
             {cardList.map((card, index) => (
               <span
@@ -114,7 +120,7 @@ const Cards = () => {
                 </div>
                 Block Card
               </div>
-              <FontAwesomeIcon icon={faChevronRight} color="#895cfe" />
+              <FontAwesomeIcon icon={faChevronRight} color="#924ffa" />
             </div>
             <div className="setting my-2 d-flex justify-content-between">
               <div className="d-flex">
@@ -123,7 +129,7 @@ const Cards = () => {
                 </div>
                 Limits{" "}
               </div>
-              <FontAwesomeIcon icon={faChevronRight} color="#895cfe" />
+              <FontAwesomeIcon icon={faChevronRight} color="#924ffa" />
             </div>
             <div className="setting my-2 d-flex justify-content-between">
               <div className="d-flex">
@@ -132,7 +138,7 @@ const Cards = () => {
                 </div>
                 Delete Card
               </div>
-              <FontAwesomeIcon icon={faChevronRight} color="#895cfe" />
+              <FontAwesomeIcon icon={faChevronRight} color="#924ffa" />
             </div>
           </div>
         </div>

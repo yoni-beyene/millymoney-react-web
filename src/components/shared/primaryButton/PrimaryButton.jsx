@@ -10,7 +10,7 @@ const PrimaryButton = ({
 }) => {
   return (
     <button
-      className={`primary-button ${disabled ? "disabled" : ""}`}
+      className={` primary-button ${disabled ? "disabled" : ""}`}
       onClick={onClick}
       disabled={disabled}
       style={

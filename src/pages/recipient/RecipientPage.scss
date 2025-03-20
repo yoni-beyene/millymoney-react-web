@@ -2,7 +2,6 @@
   border: unset !important;
 }
 .recipient-container {
-  margin: 0 auto;
   font-family: "Arial", sans-serif;
 
   .header {
@@ -82,12 +81,12 @@
       }
     }
     .icon-sub-text {
-      color: #895cfe;
+      color: #924ffa;
       font-size: 15px;
     }
   }
   .brand-color-text {
-    color: #895cfe;
+    color: #924ffa;
   }
   .back-icon {
     cursor: pointer;
@@ -155,4 +154,9 @@
       }
     }
   }
+}
+.recipient-page-btn {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 2px 2px;
+  cursor: pointer;
+  border: unset;
 }

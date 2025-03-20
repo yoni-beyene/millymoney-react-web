@@ -9,9 +9,8 @@ const RecipientList = ({ handleRecipientClick, recipients }) => {
       {recipients.map((recipient, index) => (
         <button
           key={index + 1}
-          className="list-group-item d-flex justify-content-between align-items-center my-2 py-3"
+          className="list-group-item d-flex justify-content-between align-items-center my-2 py-4 recipient-page-btn"
           onClick={() => handleRecipientClick(recipient)}
-          style={{ cursor: "pointer" }}
         >
           <div className="d-flex align-items-center">
             <img
@@ -25,7 +24,11 @@ const RecipientList = ({ handleRecipientClick, recipients }) => {
               <small className="text-muted">{recipient.accountNumber}</small>
             </div>
           </div>
-          <FontAwesomeIcon icon={faChevronRight} color="#895cfe" />
+          <FontAwesomeIcon
+            icon={faChevronRight}
+            color="#924ffa"
+            style={{ fontSize: "1.7em" }}
+          />
         </button>
       ))}
     </ul>
