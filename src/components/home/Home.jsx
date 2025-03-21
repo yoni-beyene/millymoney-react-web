@@ -101,7 +101,10 @@ const Home = () => {
               </span>{" "}
               Receive
             </div>
-            <div className="action-item">
+            <div
+              className="action-item"
+              onClick={() => navigate("/transaction")}
+            >
               <span>
                 <FontAwesomeIcon icon={faArrowUp} />
                 <FontAwesomeIcon icon={faArrowDown} />
@@ -110,7 +113,9 @@ const Home = () => {
             </div>
           </div>
         </section>{" "}
-        <Transaction />
+        <div className="mb-5">
+          <Transaction homepage={true} />
+        </div>
       </div>
     </main>
   );

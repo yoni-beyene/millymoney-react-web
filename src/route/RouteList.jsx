@@ -14,6 +14,7 @@ import TransferMoneyPage from "../pages/home/TransferMoneyPage";
 import PaymentReviewPage from "../pages/home/PaymentReviewPage";
 import Layout from "./Layout";
 import ErrorBoundary from "../components/shared/exception/ErrorBoundary";
+import TransactionPage from "../pages/home/TransactionPage";
 
 const RouteList = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const RouteList = createBrowserRouter([
       {
         path: "/home",
         element: <HomePage />,
+      },
+      {
+        path: "/transaction",
+        element: <TransactionPage />,
       },
       {
         path: "/transfer-money",
