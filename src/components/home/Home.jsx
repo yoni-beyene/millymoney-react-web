@@ -68,8 +68,8 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col-6 my-2">
-            <div style={{ borderRadius: "60px", height: "80px" }}>
+          <div className="col-6 my-2 pt-4">
+            <div style={{ borderRadius: "60px", height: "70px" }}>
               <PrimaryButton
                 text="Send Money"
                 onClick={() => sendMoneyHandler()}

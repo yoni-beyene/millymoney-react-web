@@ -10,6 +10,8 @@ import HTTPService from "../../services/shared/HTTPService";
 import LoadingPage from "../shared/loadingPage/LoadingPage";
 import { sendMoneyAction } from "../../store/action/sendMoneyAction";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 const TransferMoney = () => {
   const navigate = useNavigate();
   const useQuery = () => new URLSearchParams(useLocation().search);
@@ -50,7 +52,9 @@ const TransferMoney = () => {
         readAllRecipient();
       })
       .catch((err) => {
-        alert(err.response.data.err);
+        toast.error(
+          err?.response?.data?.err ?? "Error occured please try again!"
+        );
       });
   };
 
@@ -61,13 +65,15 @@ const TransferMoney = () => {
         setRecipientList(res.data.recipients);
       })
       .catch((err) => {
-        alert(err.response.data.err);
+        toast.error(
+          err?.response?.data?.err ?? "Error occured please try again!"
+        );
       });
   };
 
   const fetchNameFromAPI = (accountNumber) => {
     if (accountNumber === "" || selectedBank === null) {
-      alert("Error");
+      toast.warning("Account number required");
     } else {
       setIsLoading(true);
       HTTPService.post(
@@ -83,11 +89,12 @@ const TransferMoney = () => {
               res.data.customer.lastName
           );
           setRecipient(res.data.customer);
-
           setIsLoading(false);
         })
         .catch((err) => {
-          console.log(err);
+          toast.error(
+            err?.response?.data?.err ?? "Error occured please try again!"
+          );
           setIsLoading(false);
         });
     }
@@ -132,7 +139,9 @@ const TransferMoney = () => {
             setIsLoading(false);
           })
           .catch((err) => {
-            console.log(err);
+            toast.error(
+              err?.response?.data?.err ?? "Error occured please try again!"
+            );
             setIsLoading(false);
           });
       }

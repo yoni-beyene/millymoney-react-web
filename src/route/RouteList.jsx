@@ -19,7 +19,8 @@ import TransactionPage from "../pages/home/TransactionPage";
 
 const ProtectedRoute = ({ element }) => {
   const token = useSelector((state) => state.global.accessToken);
-  return token ? element : <Navigate to="/login" replace />;
+  const email = useSelector((state) => state.global?.sender?.email);
+  return token && email ? element : <Navigate to="/login" replace />;
 };
 
 const RouteList = createBrowserRouter([
@@ -28,8 +29,12 @@ const RouteList = createBrowserRouter([
     children: [
       { path: "/", element: <LoginPage /> },
       { path: "/login", element: <LoginPage /> },
-      { path: "/register", element: <RegisterPage /> },
       { path: "/verification", element: <VerificationPage /> },
+      { path: "/register", element: <RegisterPage /> },
+      {
+        path: "terms-condition",
+        element: <VerificationPage />,
+      },
       { path: "/home", element: <ProtectedRoute element={<HomePage />} /> },
       {
         path: "/transaction",

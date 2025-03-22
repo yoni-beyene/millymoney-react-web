@@ -6,6 +6,7 @@ import "./VerificationPage.scss";
 import { globalActionType } from "../../store/action/shared/globalAction";
 import WelcomeCarousel from "../../components/welcomeCarousel/WelcomeCarousel";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const VerificationPage = () => {
   const navigate = useNavigate();
@@ -34,10 +35,6 @@ const VerificationPage = () => {
     if (text.length === 6) {
       const values = [...text.padEnd(6, "").slice(0, 6)];
       setCode(values);
-      values.forEach((value, i) => {
-        if (inputs.current[i])
-          inputs.current[i].setNativeProps({ text: value });
-      });
     } else {
       newCode[index] = text[0] || "";
       setCode(newCode);
@@ -56,18 +53,16 @@ const VerificationPage = () => {
     try {
       setTimer(60);
       setResendDisabled(true);
-
       const res = await HTTPService.post(
         `/sender/validate-sender/${optData.otp.phoneNumber}`
       );
-      alert("OTP resent successfully.");
+      toast.success("OTP resent successfully.");
       dispatch({
         type: globalActionType.SAVE_OPT_DATA,
         optData: res.data,
       });
     } catch (error) {
-      alert("Failed to resend OTP.");
-      console.error(error);
+      toast.error(error?.response?.data?.err ?? "Failed to resend OTP!");
     }
   };
 
@@ -75,7 +70,7 @@ const VerificationPage = () => {
     setIsLoading(true);
     const isCodeInvalid = code.some((item) => !item);
     if (isCodeInvalid) {
-      alert("Verification code is required");
+      toast.warning("Verification code is required");
       setIsLoading(false);
     } else {
       try {
@@ -108,15 +103,15 @@ const VerificationPage = () => {
               navigate("/register");
             }
           })
-          .catch(() => {
+          .catch((err) => {
             setIsLoading(false);
-            alert("Verification failed.");
-            setIsLoading(false);
+            toast.error(
+              err?.response?.data?.err ?? "Verification code is required"
+            );
           });
       } catch (err) {
         setIsLoading(false);
-        alert("Verification failed.");
-        console.error(err);
+        toast.error(err ?? "Error occured please try again!");
       }
     }
   };

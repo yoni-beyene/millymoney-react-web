@@ -9,6 +9,7 @@ import LoadingPage from "../shared/loadingPage/LoadingPage";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faBell } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 const AddRecipient = () => {
   const navigate = useNavigate();
@@ -38,12 +39,16 @@ const AddRecipient = () => {
         setBanks(res.data.banks);
         setIsLoading(false);
       })
-      .catch((err) => alert(err.data));
+      .catch((err) =>
+        toast.error(
+          err?.response?.data?.err ?? "Error occured please try again!"
+        )
+      );
   }, []);
 
   const fetchNameFromAPI = (accountNumber) => {
     if (accountNumber === "" || selectedBank === null) {
-      alert("Error");
+      toast.warning("Account number required");
     } else {
       setIsLoading(true);
       HTTPService.post(
@@ -81,8 +86,10 @@ const AddRecipient = () => {
         navigate("/recipient");
       })
       .catch((err) => {
+        toast.error(
+          err?.response?.data?.err ?? "Error occured please try again!"
+        );
         setIsLoading(false);
-        alert(err);
       });
   };
 

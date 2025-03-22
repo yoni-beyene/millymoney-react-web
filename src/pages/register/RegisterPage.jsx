@@ -8,6 +8,7 @@ import "./RegisterPage.scss";
 import WelcomeCarousel from "../../components/welcomeCarousel/WelcomeCarousel";
 import { useNavigate } from "react-router-dom";
 import { globalActionType } from "../../store/action/shared/globalAction";
+import { toast } from "react-toastify";
 
 const validationSchema = yup.object().shape({
   firstName: yup.string().required("First name is required"),
@@ -18,12 +19,10 @@ const validationSchema = yup.object().shape({
 const RegisterPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const optData = useSelector((state) => state.global.optData);
   const senderId = useSelector((state) => state.global.senderId);
   const [isLoading, setIsLoading] = useState(false);
-  const [isChecked, setIsChecked] = useState(false); // Checkbox state
-
+  const [isChecked, setIsChecked] = useState(false);
   return (
     <div className="container-fluid">
       <div className="row">
@@ -70,15 +69,13 @@ const RegisterPage = () => {
                         });
                         navigate("/home");
                         setIsLoading(false);
-
-                        alert(
-                          `Account created for ${values.firstName} ${values.lastName}`
-                        );
                       })
                       .catch((err) => {
                         setIsLoading(false);
-                        console.log(err);
-                        alert(err?.response?.data?.err);
+                        toast.error(
+                          err?.response?.data?.err ??
+                            "Error occured please try again!"
+                        );
                       });
                   }}
                 >

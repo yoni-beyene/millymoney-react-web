@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import HTTPService from "../../services/shared/HTTPService";
 import LoadingPage from "../shared/loadingPage/LoadingPage";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import { toast } from "react-toastify";
 
 ChartJS.register(
   CategoryScale,
@@ -39,8 +40,10 @@ const StatisticsChart = () => {
         getMonth(5, res.data);
       })
       .catch((err) => {
+        toast.error(
+          err?.response?.data?.err ?? "Error occured please try again!"
+        );
         setIsLoading(false);
-        alert(err.response.data.err);
       });
   }, []);
 

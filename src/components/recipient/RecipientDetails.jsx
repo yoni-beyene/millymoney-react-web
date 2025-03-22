@@ -14,6 +14,7 @@ import LoadingComponent from "../shared/loadingPage/LoadingComponent";
 import LoadingPage from "../shared/loadingPage/LoadingPage";
 import { useNavigate } from "react-router-dom";
 import TransactionDetailsModal from "../home/TransactionDetailsModal ";
+import { toast } from "react-toastify";
 
 const RecipientDetails = ({ selectedRecipient }) => {
   const navigate = useNavigate();
@@ -42,8 +43,10 @@ const RecipientDetails = ({ selectedRecipient }) => {
         setLoadingRecipients(false);
       })
       .catch((err) => {
+        toast.error(
+          err?.response?.data?.err ?? "Error occured please try again!"
+        );
         setLoadingRecipients(false);
-        alert(err);
       });
   };
   const readAllBank = () => {
@@ -52,7 +55,9 @@ const RecipientDetails = ({ selectedRecipient }) => {
         setBank(res.data.bank);
       })
       .catch((err) => {
-        alert(err.data);
+        toast.error(
+          err?.response?.data?.err ?? "Error occured please try again!"
+        );
       });
   };
 
@@ -66,8 +71,10 @@ const RecipientDetails = ({ selectedRecipient }) => {
         console.log(res);
       })
       .catch((err) => {
+        toast.error(
+          err?.response?.data?.err ?? "Error occured please try again!"
+        );
         setIsLoading(false);
-        alert(err);
       });
   };
 

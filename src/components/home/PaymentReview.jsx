@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faBell } from "@fortawesome/free-solid-svg-icons";
 import numberWithCommas from "../../services/shared/numberWithCommas";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 const PaymentReview = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +25,9 @@ const PaymentReview = () => {
       })
       .catch((err) => {
         setIsLoading(false);
-        alert(err.response.data.err);
+        toast.error(
+          err?.response?.data?.err ?? "Error occured please try again!"
+        );
       });
   };
   return (

@@ -9,6 +9,7 @@ import LoadingPage from "../shared/loadingPage/LoadingPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import TransactionDetailsModal from "./TransactionDetailsModal ";
 import PropTypes from "prop-types";
+import { toast } from "react-toastify";
 
 const Transaction = ({ homepage }) => {
   const [show, setShow] = useState(false);
@@ -29,7 +30,9 @@ const Transaction = ({ homepage }) => {
       })
       .catch((err) => {
         setIsLoading(false);
-        alert(err.response.data.err);
+        toast.error(
+          err?.response?.data?.err ?? "Error occured please try again!"
+        );
       });
   }, [senderId]);
   if (homepage) {
@@ -44,7 +47,7 @@ const Transaction = ({ homepage }) => {
         {isLoading ? (
           <LoadingComponent />
         ) : (
-          <div className="recipient-container card p-5 mt-5">
+          <div className="recipient-container card p-4 mt-5">
             {transfers.length === 0 ? (
               <div>
                 <h1 className="text-danger text-center">
@@ -54,7 +57,7 @@ const Transaction = ({ homepage }) => {
             ) : (
               <>
                 <div className="d-flex justify-content-between mt-3 mb-1 ">
-                  <h5 className="home-page-transaction-title">Transaction</h5>
+                  <h className="home-page-transaction-title">Transaction</h>
                   <a
                     href="/transaction"
                     className="view-all home-page-transaction-title"

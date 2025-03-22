@@ -6,6 +6,7 @@ import LoadingPage from "../shared/loadingPage/LoadingPage";
 import PrimaryButton from "../shared/primaryButton/PrimaryButton";
 import visa from "../../assets/visa.png";
 import mastercard from "../../assets/mastercard.png";
+import { toast } from "react-toastify";
 
 const Cards = () => {
   const [cardList, setCardList] = useState([]);
@@ -21,7 +22,9 @@ const Cards = () => {
       .catch((err) => {
         console.log(err);
         setIsLoading(false);
-        alert(err.response.data.err);
+        toast.error(
+          err?.response?.data?.err ?? "Error occured please try again!"
+        );
       });
   };
 
@@ -36,8 +39,10 @@ const Cards = () => {
         setCardList(res.data.savedCards);
       })
       .catch((err) => {
+        toast.error(
+          err?.response?.data?.err ?? "Error occured please try again!"
+        );
         setIsLoading(false);
-        alert(err.response.data.err);
       });
   };
 

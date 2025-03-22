@@ -9,6 +9,8 @@ import { globalActionType } from "../../store/action/shared/globalAction";
 import WelcomeCarousel from "../../components/welcomeCarousel/WelcomeCarousel";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/bootstrap.css";
+import { toast } from "react-toastify";
+
 const loginSchema = yup.object({
   phone: yup
     .string()
@@ -36,9 +38,9 @@ const LoginPage = () => {
                 </div>
                 <div className="hero">
                   <h1 className="hero-text">Welcome</h1>
-                </div>
-                <div className="form-section">
                   <h2 className="leader-text">Login</h2>
+                </div>
+                <div className="form-section mt-3">
                   <p className="small-text">
                     Enter Your phone number to Continue.
                   </p>
@@ -47,20 +49,22 @@ const LoginPage = () => {
                   initialValues={{ phone: "" }}
                   validationSchema={loginSchema}
                   onSubmit={(values) => {
-                    console.log(values);
                     setIsLoading(true);
                     HTTPService.post(`/sender/validate-sender/+${values.phone}`)
                       .then((res) => {
                         navigator.clipboard.writeText(res.data.otp.otpValue);
-                        alert("OTP copied to clipboard!");
                         dispatch({
                           type: globalActionType.SAVE_OPT_DATA,
                           optData: res.data,
                         });
-                        navigation.navigate("verification");
+                        navigation.navigate("/verification");
                         setIsLoading(false);
                       })
-                      .catch(() => {
+                      .catch((err) => {
+                        toast.error(
+                          err?.response?.data?.err ??
+                            "Error occured please try again!"
+                        );
                         setIsLoading(false);
                       });
                   }}
@@ -75,7 +79,7 @@ const LoginPage = () => {
                             "form-control input-required w-100 text-input-large",
                           placeholder: "Phone number",
                         }}
-                        country={"Ethiopia"}
+                        country={"et"}
                         enableSearch={true}
                         value={props.values.phone}
                         onBlur={props.handleBlur("phone")}
