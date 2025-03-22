@@ -26,6 +26,16 @@ const globalReducer = (state = initialState, action) => {
         senderId: action.senderId,
         sender: action.sender,
       };
+    case globalActionType.SAVE_USER_DATA:
+      return {
+        ...state,
+        sender: action.sender,
+      };
+    case globalActionType.LOGOUT:
+      return {
+        ...state,
+        accessToken: null,
+      };
     default:
       return state;
   }

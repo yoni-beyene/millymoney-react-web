@@ -1,21 +1,12 @@
 import { useState, useEffect } from "react";
 import "./Cards.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronRight,
-  faCreditCard,
-  faEllipsis,
-  faGauge,
-  faIdCard,
-  faTableCellsColumnLock,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
-import PropTypes from "prop-types";
 import HTTPService from "../../services/shared/HTTPService";
 import { useSelector } from "react-redux";
 import LoadingPage from "../shared/loadingPage/LoadingPage";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from "react-responsive-carousel";
+import PrimaryButton from "../shared/primaryButton/PrimaryButton";
+import visa from "../../assets/visa.png";
+import mastercard from "../../assets/mastercard.png";
+
 const Cards = () => {
   const [cardList, setCardList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -42,7 +33,6 @@ const Cards = () => {
     HTTPService.post(`/tokenization/sender-cards/${senderId}`)
       .then((res) => {
         setIsLoading(false);
-        console.log(res.data.savedCards);
         setCardList(res.data.savedCards);
       })
       .catch((err) => {
@@ -51,102 +41,58 @@ const Cards = () => {
       });
   };
 
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const handleScroll = (event) => {
-    const scrollLeft = event.target.scrollLeft;
-    const width = event.target.offsetWidth;
-    const newIndex = Math.round(scrollLeft / width);
-    setActiveIndex(newIndex);
-  };
   return (
-    <main className="content p-5">
+    <div className="w-100">
+      <header className="header d-flex justify-content-end">
+        <div style={{ width: "200px" }}>
+          <PrimaryButton
+            text="+ Add Card"
+            onClick={() => addNewCard()}
+            isLoading={false}
+          />
+        </div>
+      </header>
       {isLoading ? (
         <LoadingPage />
+      ) : cardList.length === 0 ? (
+        <div>
+          <h1 className="text-danger text-center">No Card found</h1>
+        </div>
       ) : (
-        <div className="cards-container w-100">
-          <header className="header">
-            <h1>Cards</h1>
-            <button className="add-card" onClick={() => addNewCard()}>
-              + Add Card
-            </button>
-          </header>
-          <div
-            className="cards-carousel w-100 d-flex justify-content-center"
-            onScroll={handleScroll}
-          >
-            {" "}
-            <Carousel>
-              {cardList.map((card) => (
+        <>
+          <div className="row">
+            {cardList.map((card) => (
+              <div key={card.cardId} className="col-4 mt-3 px-0">
                 <div
-                  key={card.cardId}
-                  className="img-fluid custom-card d-flex justify-content-end align-items-start p-3 flex-column"
-                  style={{ width: "200px", height: "200px" }}
+                  className="w-100"
+                  style={{
+                    height: "250px",
+                    backgroundImage: "url(/assets/card.png)",
+                    backgroundSize: "cover",
+                    backgroundRepeat: "no-repeat",
+                  }}
                 >
-                  <p> {card.cardPrefix}XXXXXXXXXX</p>
-                  <p> {card.expiry}XXXXX</p>
+                  <div className="d-flex align-items-start justify-content-end px-4 w-100 h-100 flex-column">
+                    {}{" "}
+                    <img
+                      src={card.cardType === "VISA" ? visa : mastercard}
+                      style={{
+                        width: "100px",
+                        position: "relative",
+                        top: "-110px",
+                      }}
+                    />
+                    <h4> {card.cardPrefix}XXXXXXXXXX</h4>
+                    <h5> {card.expiry}XXXXX</h5>
+                  </div>
                 </div>
-              ))}
-            </Carousel>
-          </div>
-
-          <div className="card-carousel-indicators">
-            {cardList.map((card, index) => (
-              <span
-                key={card.id + index}
-                className={`indicator ${activeIndex === index ? "active" : ""}`}
-              ></span>
+              </div>
             ))}
           </div>
-          <div className="card-actions">
-            <button className="card-btn">
-              <FontAwesomeIcon icon={faEllipsis} />
-              Show PIN
-            </button>
-            <button className="card-btn">
-              <FontAwesomeIcon icon={faCreditCard} />
-              Card Details
-            </button>
-            <button className="card-btn">
-              <FontAwesomeIcon icon={faIdCard} />
-              Freeze Card
-            </button>
-          </div>
-          <div className="card-settings">
-            <div className="setting my-2 d-flex justify-content-between">
-              <div className="d-flex">
-                <div className="me-3">
-                  <FontAwesomeIcon icon={faTableCellsColumnLock} />
-                </div>
-                Block Card
-              </div>
-              <FontAwesomeIcon icon={faChevronRight} color="#924ffa" />
-            </div>
-            <div className="setting my-2 d-flex justify-content-between">
-              <div className="d-flex">
-                <div className="me-3">
-                  <FontAwesomeIcon icon={faGauge} />
-                </div>
-                Limits{" "}
-              </div>
-              <FontAwesomeIcon icon={faChevronRight} color="#924ffa" />
-            </div>
-            <div className="setting my-2 d-flex justify-content-between">
-              <div className="d-flex">
-                <div className="me-3">
-                  <FontAwesomeIcon icon={faTrash} />
-                </div>
-                Delete Card
-              </div>
-              <FontAwesomeIcon icon={faChevronRight} color="#924ffa" />
-            </div>
-          </div>
-        </div>
+        </>
       )}
-    </main>
+    </div>
   );
 };
-Cards.propTypes = {
-  addNewCard: PropTypes.func.isRequired,
-};
+Cards.propTypes = {};
 export default Cards;

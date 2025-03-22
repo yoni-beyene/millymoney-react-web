@@ -4,19 +4,20 @@ import {
   faCreditCard,
   faBell,
   faPowerOff,
-  faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import "./Profile.scss";
-import user from "../../assets/images/user-icon.jpeg";
-import { useSelector } from "react-redux";
+import userIcon from "../../assets/images/user-icon.jpeg";
+import { useSelector, useDispatch } from "react-redux";
 
 import { Formik, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import HTTPService from "../../services/shared/HTTPService";
 import PrimaryButton from "../shared/primaryButton/PrimaryButton";
 import { useState } from "react";
+import { globalActionType } from "../../store/action/shared/globalAction";
 
 const Profile = () => {
+  const dispatch = useDispatch();
   const userData = useSelector((state) => state.global.sender);
   const [isLoading, setIsLoading] = useState(false);
   const validationSchema = yup.object({
@@ -76,7 +77,17 @@ const Profile = () => {
       <div className="card ">
         <div className="profile-page w-100">
           <div className="profile-header">
-            <img className="profile-avatar" src={user} alt="Profile Avatar" />
+            <img
+              className="profile-avatar"
+              src={`https://testmilly.ecopiavaluechain.com/sender/profile/${
+                userData.senderId
+              }?date=${Date.now()}`}
+              alt="Profile Avatar"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = userIcon;
+              }}
+            />
             <h2 className="profile-name">
               {userData.firstName} {userData.lastName}
             </h2>
@@ -86,7 +97,7 @@ const Profile = () => {
             </p>
           </div>
 
-          <div className="accordion" id="accordionExample">
+          <div className="accordion" id="profileAccordion">
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingOne">
                 <button
@@ -96,6 +107,7 @@ const Profile = () => {
                   data-bs-target="#collapseOne"
                   aria-expanded="false"
                   aria-controls="collapseOne"
+                  data-bs-parent="#profileAccordion"
                 >
                   <FontAwesomeIcon icon={faUser} className="me-3" />
                   <span>Personal Details</span>
@@ -105,6 +117,7 @@ const Profile = () => {
                 id="collapseOne"
                 className="accordion-collapse collapse"
                 aria-labelledby="headingOne"
+                data-bs-parent="#profileAccordion"
               >
                 <div className="accordion-body">
                   <Formik
@@ -205,20 +218,86 @@ const Profile = () => {
                 </div>
               </div>
             </div>
+            {/* <div className="accordion-item">
+              <h2 className="accordion-header" id="headingTwo">
+                <button
+                  className="accordion-button collapsed profile-option"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseTwo"
+                  aria-expanded="false"
+                  aria-controls="collapseTwo"
+                  data-bs-parent="#profileAccordion"
+                >
+                  <FontAwesomeIcon icon={faCreditCard} />
+                  <span>Terms of Use</span>
+                </button>
+              </h2>
+              <div
+                id="collapseTwo"
+                className="accordion-collapse collapse"
+                aria-labelledby="headingTwo"
+                data-bs-parent="#profileAccordion"
+              >
+                <div className="accordion-body">
+                  <p>
+                    These are the terms of use for our platform. Please read
+                    them carefully.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingThree">
+                <button
+                  className="accordion-button collapsed profile-option"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseThree"
+                  aria-expanded="false"
+                  aria-controls="collapseThree"
+                  data-bs-parent="#profileAccordion"
+                >
+                  <FontAwesomeIcon icon={faBell} />
+                  <span></span>
+                </button>
+              </h2>
+              <div
+                id="collapseThree"
+                className="accordion-collapse collapse"
+                aria-labelledby="headingThree"
+                data-bs-parent="#profileAccordion"
+              >
+                <div className="accordion-body">
+                  <p>
+                    Your privacy is important to us. This section explains how
+                    we handle your data.
+                  </p>
+                </div>
+              </div>
+            </div> */}
           </div>
           <div className="profile-options">
-            <div className="profile-option">
+            <div className="profile-option  " onClick={() => {}}>
               <FontAwesomeIcon icon={faCreditCard} />
-              <span>Terms of use</span>
-              <FontAwesomeIcon icon={faChevronRight} />
+              <span>Terms of Use</span>
             </div>
-            <div className="profile-option">
+          </div>
+          <div className="profile-options">
+            <div className="profile-option" onClick={() => {}}>
               <FontAwesomeIcon icon={faBell} />
-              <span>Privacy policy</span>
-              <FontAwesomeIcon icon={faChevronRight} />
+              <span>Privacy Policy</span>
             </div>
-
-            <div className="profile-option logout">
+          </div>
+          <div className="profile-options">
+            <div
+              className="profile-option logout"
+              onClick={() =>
+                dispatch({
+                  type: globalActionType.LOGOUT,
+                })
+              }
+            >
               <FontAwesomeIcon icon={faPowerOff} />
               <span>Logout</span>
             </div>

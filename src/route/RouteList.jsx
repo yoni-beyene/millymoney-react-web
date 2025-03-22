@@ -1,10 +1,11 @@
+import { createBrowserRouter, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import HomePage from "../pages/home/HomePage";
 import LoginPage from "../pages/login/LoginPage";
 import RecipientPage from "../pages/recipient/RecipientPage";
 import RegisterPage from "../pages/register/RegisterPage";
 import StatisticsPage from "../pages/statistics/StatisticsPage";
 import VerificationPage from "../pages/verification/VerificationPage";
-import { createBrowserRouter } from "react-router-dom";
 import CardsPage from "../pages/card/CardPages";
 import ProfilePage from "../pages/profile/ProfilePage";
 import EnterAmount from "../components/sendMoney/EnterAmount";
@@ -16,70 +17,56 @@ import Layout from "./Layout";
 import ErrorBoundary from "../components/shared/exception/ErrorBoundary";
 import TransactionPage from "../pages/home/TransactionPage";
 
+const ProtectedRoute = ({ element }) => {
+  const token = useSelector((state) => state.global.accessToken);
+  return token ? element : <Navigate to="/login" replace />;
+};
+
 const RouteList = createBrowserRouter([
   {
     element: <Layout />,
     children: [
-      {
-        path: "/",
-        element: <LoginPage />,
-      },
-      {
-        path: "/login",
-        element: <LoginPage />,
-      },
-      {
-        path: "/verification",
-        element: <VerificationPage />,
-      },
-      {
-        path: "/register",
-        element: <RegisterPage />,
-      },
-      {
-        path: "/home",
-        element: <HomePage />,
-      },
+      { path: "/", element: <LoginPage /> },
+      { path: "/login", element: <LoginPage /> },
+      { path: "/register", element: <RegisterPage /> },
+      { path: "/verification", element: <VerificationPage /> },
+      { path: "/home", element: <ProtectedRoute element={<HomePage />} /> },
       {
         path: "/transaction",
-        element: <TransactionPage />,
+        element: <ProtectedRoute element={<TransactionPage />} />,
       },
       {
         path: "/transfer-money",
-        element: <TransferMoneyPage />,
+        element: <ProtectedRoute element={<TransferMoneyPage />} />,
       },
       {
         path: "/payment-review",
-        element: <PaymentReviewPage />,
+        element: <ProtectedRoute element={<PaymentReviewPage />} />,
       },
-
       {
         path: "/statistics",
-        element: <StatisticsPage />,
+        element: <ProtectedRoute element={<StatisticsPage />} />,
       },
       {
         path: "/recipient",
-        element: <RecipientPage />,
+        element: <ProtectedRoute element={<RecipientPage />} />,
       },
       {
         path: "/recipient/add-new",
-        element: <AddRecientPage />,
+        element: <ProtectedRoute element={<AddRecientPage />} />,
       },
-      {
-        path: "/cards",
-        element: <CardsPage />,
-      },
+      { path: "/cards", element: <ProtectedRoute element={<CardsPage />} /> },
       {
         path: "/profile",
-        element: <ProfilePage />,
+        element: <ProtectedRoute element={<ProfilePage />} />,
       },
       {
         path: "/send-money/enter-amount",
-        element: <EnterAmount />,
+        element: <ProtectedRoute element={<EnterAmount />} />,
       },
       {
         path: "/send-money/enter-recipient",
-        element: <EnterRecipient />,
+        element: <ProtectedRoute element={<EnterRecipient />} />,
       },
     ],
     errorElement: (

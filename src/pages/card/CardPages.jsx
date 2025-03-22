@@ -1,25 +1,18 @@
-import { useState } from "react";
 import Cards from "../../components/card/Cards";
 import Header from "../../components/shared/header/Header";
-import AddCard from "../../components/card/AddCard";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
 const CardsPage = () => {
-  const [showModal, setShowModal] = useState(false);
-  const addNewCard = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
   return (
     <div className="home-container">
       <Header activeTab="cards" />
-      {showModal ? (
-        <AddCard handleCloseModal={handleCloseModal} />
-      ) : (
-        <Cards addNewCard={addNewCard} />
-      )}
+      <main className="content p-5">
+        <div className="d-flex justify-content-between mb-4">
+          <h2>Card</h2>
+          <FontAwesomeIcon icon={faBell} />
+        </div>
+        <Cards />
+      </main>
     </div>
   );
 };

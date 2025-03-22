@@ -53,7 +53,6 @@ const LoginPage = () => {
                       .then((res) => {
                         navigator.clipboard.writeText(res.data.otp.otpValue);
                         alert("OTP copied to clipboard!");
-
                         dispatch({
                           type: globalActionType.SAVE_OPT_DATA,
                           optData: res.data,

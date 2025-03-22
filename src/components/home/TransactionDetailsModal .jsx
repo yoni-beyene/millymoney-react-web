@@ -1,8 +1,7 @@
 import { Modal, Button } from "react-bootstrap";
-// import { Feather } from "react-feather"; // React-Feather icons for web
-// import { IoArrowBackSharp } from "react-icons/io5"; // Ionicons alternative for web
 import formatDateTime from "../../services/shared/formatDateTime";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
 const TransactionDetailsModal = ({ show, handleClose, transaction }) => {
   if (!transaction) return null;
 
@@ -14,16 +13,15 @@ const TransactionDetailsModal = ({ show, handleClose, transaction }) => {
       <Modal.Body>
         {/* Top Section */}
         <div className="text-center">
-          <div className="d-flex align-items-center mb-3">
-            <button className="btn btn-link text-dark" onClick={handleClose}>
-              {/* <IoArrowBackSharp size={24} /> */}
-            </button>
-          </div>
           <div
             className="d-flex justify-content-center align-items-center rounded-circle bg-dark"
-            style={{ width: 100, height: 100, margin: "0 auto" }}
+            style={{ width: 50, height: 50, margin: "0 auto" }}
           >
-            {/* <Feather name="arrow-up-right" size={50} color="white" /> */}
+            <FontAwesomeIcon
+              size={35}
+              icon={faArrowUpFromBracket}
+              color="white"
+            />
           </div>
           <h1 className="mt-3 text-primary">${transaction.amount}</h1>
           <h5 className="text-muted">
@@ -61,8 +59,7 @@ const TransactionDetailsModal = ({ show, handleClose, transaction }) => {
             </div>
           </div>
         </div>
-
-        {/* Button */}
+        {/* 
         <div className="text-center mt-4">
           <Button
             variant="primary"
@@ -73,7 +70,7 @@ const TransactionDetailsModal = ({ show, handleClose, transaction }) => {
           >
             Repeat this transaction
           </Button>
-        </div>
+        </div> */}
       </Modal.Body>
     </Modal>
   );

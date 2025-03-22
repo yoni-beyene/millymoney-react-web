@@ -13,6 +13,7 @@ import formatDateTime from "../../services/shared/formatDateTime";
 import LoadingComponent from "../shared/loadingPage/LoadingComponent";
 import LoadingPage from "../shared/loadingPage/LoadingPage";
 import { useNavigate } from "react-router-dom";
+import TransactionDetailsModal from "../home/TransactionDetailsModal ";
 
 const RecipientDetails = ({ selectedRecipient }) => {
   const navigate = useNavigate();
@@ -24,6 +25,8 @@ const RecipientDetails = ({ selectedRecipient }) => {
 
   const [loadingRecipients, setLoadingRecipients] = useState(true);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [show, setShow] = useState(false);
+  const [transaction, setTransaction] = useState({});
 
   useEffect(() => {
     readAllBank();
@@ -69,7 +72,12 @@ const RecipientDetails = ({ selectedRecipient }) => {
   };
 
   return (
-    <main className="content p-5">
+    <main className="p-5">
+      <TransactionDetailsModal
+        show={show}
+        handleClose={() => setShow(false)}
+        transaction={transaction}
+      />
       {loading && <LoadingPage />}
 
       <div className="recipient-container p-5">
@@ -133,17 +141,24 @@ const RecipientDetails = ({ selectedRecipient }) => {
           {loadingRecipients ? (
             <LoadingComponent />
           ) : (
-            <>
+            <div className="card px-5">
               <div className="d-flex justify-content-between my-3">
                 <h5>Transaction</h5>
-                <a href="/" className="view-all">
+                <a href="/transaction" className="view-all">
                   View All
                 </a>
               </div>
               <div className="transactions">
                 {transfers.map((transfer, index) => (
-                  <div className="transaction-item" key={index + 1}>
-                    <div className="d-flex align-item-center">
+                  <div
+                    className="transaction-item"
+                    key={index + 1}
+                    onClick={() => {
+                      setShow(true);
+                      setTransaction(transfer);
+                    }}
+                  >
+                    <div className="d-flex align-items-center">
                       <div className="transaction-item-icon">
                         <span
                           className="me-3 "
@@ -165,11 +180,11 @@ const RecipientDetails = ({ selectedRecipient }) => {
                       </div>
                     </div>
 
-                    <p className="amount">{transfer.amount}</p>
+                    <p className="amount"> ${transfer.amount}</p>
                   </div>
                 ))}
               </div>
-            </>
+            </div>
           )}
         </section>
       </div>

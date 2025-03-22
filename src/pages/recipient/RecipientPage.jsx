@@ -15,7 +15,7 @@ import HTTPService from "../../services/shared/HTTPService";
 import LoadingPage from "../../components/shared/loadingPage/LoadingPage";
 import PrimaryButton from "../../components/shared/primaryButton/PrimaryButton";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
 const RecipientPage = () => {
   const navigate = useNavigate();
 
@@ -38,7 +38,11 @@ const RecipientPage = () => {
         setIsLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        toast.error(
+          err?.response?.data?.err ?? "Error occured please try again!"
+        );
+
+        setIsLoading(false);
       });
   };
 

@@ -9,7 +9,11 @@ import { faChartSimple } from "@fortawesome/free-solid-svg-icons/faChartSimple";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
 import "./Header.scss";
+import { useDispatch } from "react-redux";
+import { globalActionType } from "../../../store/action/shared/globalAction";
 const Header = (props) => {
+  const dispatch = useDispatch();
+
   return (
     <aside className="sidebar pt-5">
       <ul className="menu">
@@ -72,7 +76,14 @@ const Header = (props) => {
           </li>
         </a>
       </ul>
-      <div className="logout">
+      <div
+        className="logout"
+        onClick={() =>
+          dispatch({
+            type: globalActionType.LOGOUT,
+          })
+        }
+      >
         <span className="me-2">
           <FontAwesomeIcon icon={faRightFromBracket} />
         </span>{" "}

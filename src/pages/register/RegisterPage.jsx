@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Formik } from "formik";
 import * as yup from "yup";
 import PrimaryButton from "../../components/shared/primaryButton/PrimaryButton";
 import HTTPService from "../../services/shared/HTTPService";
 import "./RegisterPage.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import WelcomeCarousel from "../../components/welcomeCarousel/WelcomeCarousel";
+import { useNavigate } from "react-router-dom";
+import { globalActionType } from "../../store/action/shared/globalAction";
+
 const validationSchema = yup.object().shape({
   firstName: yup.string().required("First name is required"),
   lastName: yup.string().required("Last name is required"),
@@ -15,21 +16,24 @@ const validationSchema = yup.object().shape({
 });
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const optData = useSelector((state) => state.global.optData);
+  const senderId = useSelector((state) => state.global.senderId);
   const [isLoading, setIsLoading] = useState(false);
   const [isChecked, setIsChecked] = useState(false); // Checkbox state
-  const [modalVisible, setModalVisible] = useState(false); // Modal visibility state
 
   return (
     <div className="container-fluid">
       <div className="row">
         <div className="col-md-6 d-flex flex-column justify-content-center align-items-center">
-          <div className="login-page-container">
+          <div className="login-page-container ">
             <div
               className="container justify-content-center d-flex align-items-center"
               style={{ height: "100vh" }}
             >
-              <div className="login-container px-5 w-75">
+              <div className="login-container px-5 w-50 card px-5 py-5">
                 <div className="hero">
                   <h1 className="heroText">Create Account</h1>
                   <p className="subHero">
@@ -50,19 +54,31 @@ const RegisterPage = () => {
                     };
 
                     HTTPService.post(
-                      `/sender/onboard-new/${optData.senderId}`,
+                      `/sender/onboard-new/${senderId}`,
                       requestObj
                     )
                       .then((res) => {
-                        console.log(res);
+                        dispatch({
+                          type: globalActionType.SAVE_USER_DATA,
+                          sender: {
+                            email: values.email,
+                            firstName: values.firstName,
+                            lastName: values.lastName,
+                            phoneNumber: optData.otp.phoneNumber,
+                            senderId: senderId,
+                          },
+                        });
+                        navigate("/home");
                         setIsLoading(false);
+
                         alert(
                           `Account created for ${values.firstName} ${values.lastName}`
                         );
                       })
                       .catch((err) => {
                         setIsLoading(false);
-                        alert(err.response.data.err);
+                        console.log(err);
+                        alert(err?.response?.data?.err);
                       });
                   }}
                 >
@@ -136,13 +152,14 @@ const RegisterPage = () => {
                           onChange={() => setIsChecked(!isChecked)}
                           className="checkbox"
                         />
-                        <button
+                        <a
                           type="button"
-                          onClick={() => setModalVisible(true)}
+                          href="/terms-condition"
                           className="termsText"
+                          target="_blank"
                         >
                           I accept the terms and privacy policy
-                        </button>
+                        </a>
                       </div>
                       <div className="confirmSection">
                         <PrimaryButton
@@ -155,33 +172,6 @@ const RegisterPage = () => {
                     </div>
                   )}
                 </Formik>
-
-                {modalVisible && (
-                  <div className="modalContainer">
-                    <div className="modalContent">
-                      <h2 className="modalTitle">Terms and Conditions</h2>
-                      <div className="modalText">
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Sed pulvinar dolor vitae metus ultricies, non
-                          porttitor nisi sollicitudin. Mauris non risus id
-                          sapien suscipit consectetur. Nulla facilisi.
-                        </p>
-                        <p>
-                          Quisque pharetra erat ut est feugiat, ut tincidunt
-                          sapien posuere. Donec id lacus nec velit porttitor
-                          luctus ac eget nisl.
-                        </p>
-                      </div>
-                      <button
-                        onClick={() => setModalVisible(false)}
-                        className="closeButton"
-                      >
-                        Close
-                      </button>
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           </div>

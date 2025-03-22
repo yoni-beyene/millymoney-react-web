@@ -3,11 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import PrimaryButton from "../../components/shared/primaryButton/PrimaryButton";
 import HTTPService from "../../services/shared/HTTPService";
 import "./VerificationPage.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { globalActionType } from "../../store/action/shared/globalAction";
 import WelcomeCarousel from "../../components/welcomeCarousel/WelcomeCarousel";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const VerificationPage = () => {
   const navigate = useNavigate();
@@ -90,24 +88,31 @@ const VerificationPage = () => {
           ipAddress: "127.0.0.1",
           deviceModel: "WEB",
         };
-        const res = await HTTPService.post(
+
+        HTTPService.post(
           `/sender/verify-otp/${optData.otp.phoneNumber}/${code.join("")}`,
           verifyOptRequest
-        );
+        )
+          .then((res) => {
+            setIsLoading(false);
+            dispatch({
+              type: globalActionType.SAVE_TOKEN,
+              accessToken: res.data.token,
+              senderId: res.data.sender.senderId,
+              sender: res.data.sender,
+            });
 
-        setIsLoading(false);
-        dispatch({
-          type: globalActionType.SAVE_TOKEN,
-          accessToken: res.data.token,
-          senderId: res.data.sender.senderId,
-          sender: res.data.sender,
-        });
-
-        if (optData.userExists) {
-          navigate("/home");
-        } else {
-          navigate("/fill-in");
-        }
+            if (optData.userExists) {
+              navigate("/home");
+            } else {
+              navigate("/register");
+            }
+          })
+          .catch(() => {
+            setIsLoading(false);
+            alert("Verification failed.");
+            setIsLoading(false);
+          });
       } catch (err) {
         setIsLoading(false);
         alert("Verification failed.");

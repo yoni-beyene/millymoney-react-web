@@ -82,11 +82,11 @@ const Home = () => {
         <section className="actions-section">
           <h5>Suggestion Actions</h5>
           <div className="actions">
-            <div className="action-item ">
-              <FontAwesomeIcon
-                icon={faPlus}
-                onClick={() => navigate("/recipient")}
-              />
+            <div
+              className="action-item "
+              onClick={() => navigate("/recipient/add-new")}
+            >
+              <FontAwesomeIcon icon={faPlus} />
               Add
             </div>
             <div className="action-item" onClick={() => sendMoneyHandler()}>
@@ -95,8 +95,11 @@ const Home = () => {
               </span>{" "}
               Send
             </div>
-            <div className="action-item">
-              <span style={{ rotate: "90deg" }}>
+            <div
+              className="action-item cursor-not-allowed"
+              style={{ cursor: "not-allowed" }}
+            >
+              <span style={{ rotate: "90deg", cursor: "not-allowed" }}>
                 <FontAwesomeIcon icon={faRightFromBracket} />
               </span>{" "}
               Receive
