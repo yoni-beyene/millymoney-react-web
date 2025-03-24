@@ -35,6 +35,7 @@ const RouteList = createBrowserRouter([
         path: "terms-condition",
         element: <VerificationPage />,
       },
+
       { path: "/home", element: <ProtectedRoute element={<HomePage />} /> },
       {
         path: "/transaction",
